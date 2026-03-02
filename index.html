@@ -21,8 +21,6 @@
       background: #F5F7FA;
       font-family: 'Inter', sans-serif;
       padding: 20px;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
     .dashboard-container {
@@ -92,17 +90,27 @@
       background: white;
     }
 
+    /* Fix for date inputs - make them visible */
     .date-range {
       display: flex;
       gap: 10px;
+      width: 100%;
     }
 
-    .date-range input {
+    .date-range input[type="date"] {
       flex: 1;
       padding: 10px;
       border: 1px solid #E9EDF2;
       border-radius: 12px;
       font-size: 0.9rem;
+      color: #2D3A45;
+      background: white;
+      min-width: 140px;
+    }
+
+    .date-range input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(0.5);
+      cursor: pointer;
     }
 
     .btn-apply {
@@ -114,6 +122,7 @@
       font-weight: 500;
       cursor: pointer;
       transition: background-color 0.2s ease;
+      white-space: nowrap;
     }
 
     .btn-apply:hover {
@@ -128,6 +137,7 @@
       border-radius: 40px;
       cursor: pointer;
       transition: all 0.2s ease;
+      white-space: nowrap;
     }
 
     .btn-reset:hover {
@@ -207,43 +217,29 @@
       height: 100% !important;
     }
 
-    /* Traffic Sources */
-    .traffic-sources {
-      background: white;
-      border-radius: 24px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-
-    .source-item {
+    /* Aging Stats */
+    .aging-stats {
       display: flex;
-      align-items: center;
-      margin-bottom: 15px;
+      justify-content: space-between;
+      margin-top: 15px;
+      padding: 15px;
+      background: #F5F7FA;
+      border-radius: 16px;
     }
 
-    .source-label {
-      width: 120px;
-      color: #6B7A8D;
-    }
-
-    .source-bar {
+    .aging-item {
+      text-align: center;
       flex: 1;
-      height: 12px;
-      background: #E9EDF2;
-      border-radius: 20px;
-      margin: 0 15px;
-      overflow: hidden;
     }
 
-    .source-fill {
-      height: 100%;
-      border-radius: 20px;
-      transition: width 0.3s ease;
+    .aging-label {
+      font-size: 0.8rem;
+      color: #6B7A8D;
+      margin-bottom: 5px;
     }
 
-    .source-value {
-      width: 60px;
+    .aging-value {
+      font-size: 1.5rem;
       font-weight: 600;
       color: #2D3A45;
     }
@@ -315,17 +311,17 @@
       </div>
       <div style="display: flex; gap: 20px;">
         <div style="text-align: right;">
-          <div class="kpi-value" style="font-size: 1.5rem;" id="totalLeads">0</div>
+          <div class="kpi-value" style="font-size: 1.5rem;" id="totalLeadsHeader">0</div>
           <div style="color: #6B7A8D; font-size: 0.8rem;">Total Leads</div>
         </div>
         <div style="text-align: right;">
-          <div class="kpi-value" style="font-size: 1.5rem;" id="prospectingLeads">0</div>
+          <div class="kpi-value" style="font-size: 1.5rem;" id="prospectingHeader">0</div>
           <div style="color: #6B7A8D; font-size: 0.8rem;">Prospecting</div>
         </div>
       </div>
     </div>
 
-    <!-- Filters with Custom Date Range -->
+    <!-- Filters -->
     <div class="filter-panel">
       <div class="filter-item">
         <div class="filter-label">KAM</div>
@@ -414,26 +410,21 @@
         <div class="chart-container">
           <canvas id="agingChart"></canvas>
         </div>
-      </div>
-    </div>
-
-    <!-- Traffic Sources -->
-    <div class="traffic-sources">
-      <div class="chart-title" style="margin-bottom: 20px;">📊 Lead Sources</div>
-      <div class="source-item">
-        <span class="source-label">Search Engines</span>
-        <div class="source-bar"><div class="source-fill purple" style="width: 0%;" id="sourceSearch"></div></div>
-        <span class="source-value" id="sourceSearchVal">0%</span>
-      </div>
-      <div class="source-item">
-        <span class="source-label">Direct Click</span>
-        <div class="source-bar"><div class="source-fill teal" style="width: 0%;" id="sourceDirect"></div></div>
-        <span class="source-value" id="sourceDirectVal">0%</span>
-      </div>
-      <div class="source-item">
-        <span class="source-label">Social Media</span>
-        <div class="source-bar"><div class="source-fill coral" style="width: 0%;" id="sourceSocial"></div></div>
-        <span class="source-value" id="sourceSocialVal">0%</span>
+        <!-- Aging stats as numbers -->
+        <div class="aging-stats" id="agingStats">
+          <div class="aging-item">
+            <div class="aging-label">0-30 days</div>
+            <div class="aging-value" id="aging0to30">0</div>
+          </div>
+          <div class="aging-item">
+            <div class="aging-label">31-60 days</div>
+            <div class="aging-value" id="aging31to60">0</div>
+          </div>
+          <div class="aging-item">
+            <div class="aging-label">60+ days</div>
+            <div class="aging-value" id="aging60plus">0</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -455,11 +446,10 @@
               <th>Aging (Days)</th>
               <th>Notes</th>
               <th>Country</th>
-              <th>Source</th>
             </tr>
           </thead>
           <tbody id="tableBody">
-            <tr><td colspan="9" class="text-center">Loading data...</td></tr>
+            <tr><td colspan="8" class="text-center">Loading data...</td></tr>
           </tbody>
         </table>
       </div>
@@ -483,9 +473,6 @@
     // Load Data
     // ===========================================
     async function loadData() {
-      const statusEl = document.getElementById('sheetStatus');
-      const loadBtn = document.getElementById('loadSheetBtn');
-      
       try {
         const response = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now());
         const csvText = await response.text();
@@ -505,26 +492,35 @@
         const agingIdx = headers.findIndex(h => h.includes('Lead Aging (Days)'));
         const notesIdx = headers.findIndex(h => h.includes('KAM Notes'));
         const countryIdx = headers.findIndex(h => h.includes('Country'));
-        const sourceIdx = headers.findIndex(h => h.includes('Lead Source'));
         const kamIdx = headers.findIndex(h => h.includes('Key Account Manager'));
-        const agentIdx = headers.findIndex(h => h.includes('AgentName'));
 
         allData = [];
         
+        // Get today's date for aging calculation
+        const today = new Date();
+        
         for (let i = 1; i < lines.length; i++) {
           const values = parseCSVLine(lines[i]);
+          
+          // Calculate aging based on Lead Sent Date if not provided by script
+          let aging = 0;
+          if (dateIdx >= 0 && values[dateIdx]) {
+            const leadDate = new Date(values[dateIdx]);
+            if (!isNaN(leadDate)) {
+              const diffTime = today - leadDate;
+              aging = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            }
+          }
           
           const row = {
             date: values[dateIdx] || '',
             company: values[companyIdx] || '',
             priority: values[priorityIdx] || '',
             stage: values[stageIdx] || '',
-            aging: parseInt(values[agingIdx]) || 0,
+            aging: aging,
             notes: values[notesIdx] || '',
             country: values[countryIdx] || '',
-            source: values[sourceIdx] || '',
-            kam: values[kamIdx] || '',
-            agent: values[agentIdx] || ''
+            kam: values[kamIdx] || ''
           };
           
           allData.push(row);
@@ -536,7 +532,7 @@
 
       } catch (error) {
         console.error('Error:', error);
-        alert('Error loading data: ' + error.message);
+        document.getElementById('tableBody').innerHTML = `<tr><td colspan="8" class="text-center text-danger">Error loading data: ${error.message}</td></tr>`;
       }
     }
 
@@ -596,13 +592,19 @@
 
     function updateDashboard() {
       const total = filteredData.length;
-      const prospecting = filteredData.filter(row => row.stage === 'Prospecting').length;
-      const demo = filteredData.filter(row => row.stage === 'Demo').length;
-      const proposal = filteredData.filter(row => row.stage === 'Proposal').length;
-      const negotiation = filteredData.filter(row => row.stage === 'Negotiation').length;
+      
+      // Calculate stage counts
+      const prospecting = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('prospecting')).length;
+      const demo = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('demo')).length;
+      const proposal = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('proposal')).length;
+      const negotiation = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('negotiation')).length;
       
       const advanced = demo + proposal + negotiation;
       const conversionRate = prospecting > 0 ? (advanced / prospecting * 100).toFixed(1) : 0;
+
+      // Update header KPIs
+      document.getElementById('totalLeadsHeader').innerText = total;
+      document.getElementById('prospectingHeader').innerText = prospecting;
 
       // Update KPI cards
       document.getElementById('kpiTotal').innerText = total;
@@ -612,27 +614,17 @@
       document.getElementById('proposalPercent').innerText = prospecting > 0 ? ((proposal / prospecting) * 100).toFixed(1) + '%' : '0%';
       document.getElementById('negotiationPercent').innerText = prospecting > 0 ? ((negotiation / prospecting) * 100).toFixed(1) + '%' : '0%';
 
-      // Update lead sources
-      const sources = {};
-      filteredData.forEach(row => {
-        if (row.source) {
-          sources[row.source] = (sources[row.source] || 0) + 1;
-        }
-      });
+      // Update aging stats
+      const aging0to30 = filteredData.filter(row => row.aging > 0 && row.aging <= 30).length;
+      const aging31to60 = filteredData.filter(row => row.aging > 30 && row.aging <= 60).length;
+      const aging60plus = filteredData.filter(row => row.aging > 60).length;
       
-      const searchPct = total > 0 ? ((sources['Search Engines'] || 0) / total * 100).toFixed(1) : 0;
-      const directPct = total > 0 ? ((sources['Direct Click'] || 0) / total * 100).toFixed(1) : 0;
-      const socialPct = total > 0 ? ((sources['Social Media'] || 0) / total * 100).toFixed(1) : 0;
-      
-      document.getElementById('sourceSearch').style.width = searchPct + '%';
-      document.getElementById('sourceSearchVal').innerText = searchPct + '%';
-      document.getElementById('sourceDirect').style.width = directPct + '%';
-      document.getElementById('sourceDirectVal').innerText = directPct + '%';
-      document.getElementById('sourceSocial').style.width = socialPct + '%';
-      document.getElementById('sourceSocialVal').innerText = socialPct + '%';
+      document.getElementById('aging0to30').innerText = aging0to30;
+      document.getElementById('aging31to60').innerText = aging31to60;
+      document.getElementById('aging60plus').innerText = aging60plus;
 
       // Update charts
-      updateCharts();
+      updateCharts(prospecting, demo, proposal, negotiation, aging0to30, aging31to60, aging60plus);
       
       // Update table
       updateTable();
@@ -640,17 +632,10 @@
       document.getElementById('recordCount').innerText = total + ' records';
     }
 
-    function updateCharts() {
+    function updateCharts(prospecting, demo, proposal, negotiation, aging0to30, aging31to60, aging60plus) {
       // Deals by Stage Chart
-      const stages = {};
-      filteredData.forEach(row => {
-        if (row.stage) {
-          stages[row.stage] = (stages[row.stage] || 0) + 1;
-        }
-      });
-
-      const stageLabels = Object.keys(stages);
-      const stageData = Object.values(stages);
+      const stageLabels = ['Prospecting', 'Demo', 'Proposal', 'Negotiation'];
+      const stageData = [prospecting, demo, proposal, negotiation];
 
       if (charts.dealsChart) charts.dealsChart.destroy();
       
@@ -660,43 +645,49 @@
         data: {
           labels: stageLabels,
           datasets: [{
+            label: 'Number of Deals',
             data: stageData,
-            backgroundColor: ['#A05AFF', '#4BCBEB', '#FE9496', '#1BCFB4', '#9E58FF'],
+            backgroundColor: ['#A05AFF', '#4BCBEB', '#FE9496', '#1BCFB4'],
             borderRadius: 8
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { display: false } }
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true }
+          }
         }
       });
 
       // Aging Chart
-      const agingGroups = { '0-30 days': 0, '31-60 days': 0, '60+ days': 0 };
-      filteredData.forEach(row => {
-        if (row.aging <= 30) agingGroups['0-30 days']++;
-        else if (row.aging <= 60) agingGroups['31-60 days']++;
-        else if (row.aging > 60) agingGroups['60+ days']++;
-      });
-
       if (charts.agingChart) charts.agingChart.destroy();
       
       const ctx2 = document.getElementById('agingChart').getContext('2d');
       charts.agingChart = new Chart(ctx2, {
         type: 'doughnut',
         data: {
-          labels: Object.keys(agingGroups),
+          labels: ['0-30 days', '31-60 days', '60+ days'],
           datasets: [{
-            data: Object.values(agingGroups),
-            backgroundColor: ['#A05AFF', '#FE9496', '#1BCFB4']
+            data: [aging0to30, aging31to60, aging60plus],
+            backgroundColor: ['#A05AFF', '#FE9496', '#1BCFB4'],
+            borderWidth: 0
           }]
         },
         options: {
           cutout: '65%',
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { position: 'bottom' } }
+          plugins: { 
+            legend: { position: 'bottom' },
+            datalabels: {
+              formatter: (value, ctx) => {
+                const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                return total > 0 ? ((value / total) * 100).toFixed(1) + '%' : '0%';
+              }
+            }
+          }
         }
       });
     }
@@ -721,7 +712,6 @@
           <td>${row.aging || '-'}</td>
           <td>${row.notes || '-'}</td>
           <td>${row.country || '-'}</td>
-          <td>${row.source || '-'}</td>
         `;
         tbody.appendChild(tr);
       });
@@ -738,6 +728,7 @@
       
       filteredData = allData.filter(row => {
         let match = true;
+        
         if (kam && row.kam !== kam) match = false;
         if (region && row.country !== region) match = false;
         if (priority && row.priority !== priority) match = false;
@@ -747,11 +738,13 @@
         if (startDate && row.date) {
           const rowDate = new Date(row.date);
           const start = new Date(startDate);
+          start.setHours(0,0,0,0);
           if (rowDate < start) match = false;
         }
         if (endDate && row.date) {
           const rowDate = new Date(row.date);
           const end = new Date(endDate);
+          end.setHours(23,59,59,999);
           if (rowDate > end) match = false;
         }
         

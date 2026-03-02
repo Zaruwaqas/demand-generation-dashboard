@@ -89,81 +89,81 @@
       font-weight: 500;
     }
 
-    /* Filter Panel - Fixed layout */
+    /* Filter Panel - Ultra compact */
     .filter-panel {
       background: white;
-      border-radius: 20px;
-      padding: 20px;
+      border-radius: 16px;
+      padding: 15px;
       margin-bottom: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       display: flex;
-      gap: 12px;
+      gap: 8px;
       flex-wrap: wrap;
-      align-items: flex-end;
+      align-items: center;
     }
 
     .filter-item {
       flex: 1;
-      min-width: 130px;
+      min-width: 110px;
     }
 
     .filter-label {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 600;
       text-transform: uppercase;
       color: #6B7A8D;
-      margin-bottom: 4px;
-      white-space: nowrap;
+      margin-bottom: 2px;
     }
 
     .filter-select {
       width: 100%;
-      padding: 8px 10px;
+      padding: 6px 8px;
       border: 1px solid #E9EDF2;
-      border-radius: 10px;
-      font-size: 0.85rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
       color: #2D3A45;
       background: white;
     }
 
-    /* Date range - made smaller */
+    /* Date range - extra compact */
     .date-range {
       display: flex;
-      gap: 6px;
+      gap: 4px;
       width: 100%;
     }
 
     .date-range input[type="date"] {
       flex: 1;
-      padding: 8px 10px;
+      padding: 6px 8px;
       border: 1px solid #E9EDF2;
-      border-radius: 10px;
-      font-size: 0.85rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
       color: #2D3A45;
       background: white;
-      min-width: 120px;
+      min-width: 100px;
     }
 
     .date-range input[type="date"]::-webkit-calendar-picker-indicator {
       filter: invert(0.5);
       cursor: pointer;
+      padding: 2px;
     }
 
     /* Button container - fixed width */
     .button-container {
       display: flex;
-      gap: 8px;
-      min-width: 160px;
+      gap: 6px;
+      min-width: 140px;
     }
 
     .btn-apply {
       background: #A05AFF;
       color: white;
       border: none;
-      padding: 8px 16px;
-      border-radius: 30px;
+      padding: 6px 12px;
+      border-radius: 20px;
       font-weight: 500;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       cursor: pointer;
       transition: background-color 0.2s ease;
       flex: 1;
@@ -178,9 +178,9 @@
       background: white;
       color: #6B7A8D;
       border: 1px solid #E9EDF2;
-      padding: 8px 16px;
-      border-radius: 30px;
-      font-size: 0.9rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
       cursor: pointer;
       transition: all 0.2s ease;
       flex: 1;
@@ -370,37 +370,37 @@
       </div>
     </div>
 
-    <!-- Filters - Fixed layout -->
+    <!-- Filters - Ultra compact -->
     <div class="filter-panel">
       <div class="filter-item">
         <div class="filter-label">KAM</div>
         <select class="filter-select" id="kamFilter">
-          <option value="">All KAMs</option>
+          <option value="">All</option>
         </select>
       </div>
       <div class="filter-item">
         <div class="filter-label">REGION</div>
         <select class="filter-select" id="regionFilter">
-          <option value="">All Regions</option>
+          <option value="">All</option>
         </select>
       </div>
       <div class="filter-item">
         <div class="filter-label">PRIORITY</div>
         <select class="filter-select" id="priorityFilter">
-          <option value="">All Priorities</option>
+          <option value="">All</option>
           <option value="High">High</option>
           <option value="Medium">Medium</option>
           <option value="Low">Low</option>
         </select>
       </div>
       <div class="filter-item">
-        <div class="filter-label">DEAL STAGE</div>
+        <div class="filter-label">STAGE</div>
         <select class="filter-select" id="stageFilter">
-          <option value="">All Stages</option>
+          <option value="">All</option>
         </select>
       </div>
       <div class="filter-item">
-        <div class="filter-label">DATE RANGE</div>
+        <div class="filter-label">FROM - TO</div>
         <div class="date-range">
           <input type="date" id="startDate" placeholder="Start">
           <input type="date" id="endDate" placeholder="End">
@@ -691,7 +691,7 @@
     }
 
     function updateCharts(prospecting, demo, proposal, negotiation, aging0to30, aging31to60, aging60plus) {
-      // Deals by Stage Chart - Fixed to show numbers
+      // Deals by Stage Chart - With numbers on bars
       const stageLabels = ['Prospecting', 'Demo', 'Proposal', 'Negotiation'];
       const stageData = [prospecting, demo, proposal, negotiation];
 
@@ -712,14 +712,19 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          layout: {
+            padding: {
+              top: 20
+            }
+          },
           plugins: { 
             legend: { display: false },
             datalabels: {
-              color: 'white',
-              font: { weight: 'bold', size: 14 },
+              color: '#2D3A45',
+              font: { weight: 'bold', size: 12 },
               anchor: 'end',
               align: 'top',
-              offset: 4,
+              offset: 0,
               formatter: (value) => value > 0 ? value : ''
             }
           },
@@ -768,7 +773,7 @@
             datalabels: {
               display: agingTotal > 0,
               color: 'white',
-              font: { weight: 'bold', size: 12 },
+              font: { weight: 'bold', size: 11 },
               formatter: (value) => {
                 const percentage = agingTotal > 0 ? ((value / agingTotal) * 100).toFixed(1) : 0;
                 return percentage + '%';

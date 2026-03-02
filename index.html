@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Demand Generation Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <!-- Chart.js with optimized loading -->
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
 
@@ -21,7 +21,6 @@
       background: #F5F7FA;
       font-family: 'Inter', sans-serif;
       padding: 20px;
-      /* Prevent flickering on background */
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
@@ -29,11 +28,10 @@
     .dashboard-container {
       max-width: 1800px;
       margin: 0 auto;
-      /* Prevent layout shifts */
       contain: content;
     }
 
-    /* Header with purple theme */
+    /* Header */
     .dashboard-header {
       background: white;
       border-radius: 24px;
@@ -41,8 +39,6 @@
       margin-bottom: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       border-left: 6px solid #A05AFF;
-      /* Prevent flickering on hover */
-      transition: none;
       transform: translateZ(0);
       backface-visibility: hidden;
     }
@@ -60,54 +56,10 @@
       border-radius: 40px;
       font-size: 0.8rem;
       margin-left: 15px;
-      /* Prevent flickering */
       display: inline-block;
     }
 
-    /* KPI Cards - Stabilized */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      margin-bottom: 20px;
-      /* Prevent layout shifts during load */
-      min-height: 140px;
-    }
-
-    .kpi-card {
-      background: white;
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      border-top: 4px solid #A05AFF;
-      /* Hardware acceleration for smooth rendering */
-      transform: translateZ(0);
-      backface-visibility: hidden;
-      will-change: transform;
-    }
-
-    .kpi-value {
-      font-size: 2rem;
-      font-weight: 600;
-      color: #2D3A45;
-      line-height: 1.2;
-    }
-
-    .kpi-label {
-      color: #6B7A8D;
-      font-size: 0.9rem;
-      margin-top: 5px;
-    }
-
-    .kpi-trend {
-      font-size: 0.8rem;
-      margin-top: 8px;
-    }
-
-    .trend-up { color: #1BCFB4; }
-    .trend-down { color: #FE9496; }
-
-    /* Filter Panel - Stabilized */
+    /* Filter Panel */
     .filter-panel {
       background: white;
       border-radius: 20px;
@@ -118,7 +70,6 @@
       gap: 15px;
       flex-wrap: wrap;
       align-items: flex-end;
-      /* Prevent flickering */
       transform: translateZ(0);
     }
 
@@ -143,9 +94,15 @@
       font-size: 0.9rem;
       color: #2D3A45;
       background: white;
-      /* Smooth rendering */
-      -webkit-appearance: none;
-      appearance: none;
+    }
+
+    .date-range {
+      display: flex;
+      gap: 10px;
+    }
+
+    .date-range .filter-select {
+      flex: 1;
     }
 
     .btn-apply {
@@ -156,7 +113,6 @@
       border-radius: 40px;
       font-weight: 500;
       cursor: pointer;
-      /* Prevent flickering on hover */
       transition: background-color 0.2s ease;
     }
 
@@ -178,13 +134,52 @@
       background: #F5F7FA;
     }
 
-    /* Charts Grid - Stabilized */
+    /* KPI Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 20px;
+      min-height: 140px;
+    }
+
+    .kpi-card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border-top: 4px solid #A05AFF;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+    }
+
+    .kpi-value {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #2D3A45;
+      line-height: 1.2;
+    }
+
+    .kpi-label {
+      color: #6B7A8D;
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+
+    .kpi-trend {
+      font-size: 0.8rem;
+      margin-top: 8px;
+    }
+
+    .trend-up { color: #1BCFB4; }
+    .trend-down { color: #FE9496; }
+
+    /* Charts Grid */
     .charts-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 20px;
       margin-bottom: 20px;
-      /* Fixed heights to prevent layout shifts */
       min-height: 320px;
     }
 
@@ -193,7 +188,6 @@
       border-radius: 24px;
       padding: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      /* Prevent flickering */
       transform: translateZ(0);
       backface-visibility: hidden;
     }
@@ -207,12 +201,10 @@
       border-bottom: 1px solid #E9EDF2;
     }
 
-    /* Chart containers with fixed heights */
     .chart-container {
       height: 250px;
       width: 100%;
       position: relative;
-      /* Prevent canvas flickering */
       contain: strict;
     }
 
@@ -220,12 +212,11 @@
       display: block;
       width: 100% !important;
       height: 100% !important;
-      /* Prevent flickering */
       image-rendering: -webkit-optimize-contrast;
       image-rendering: crisp-edges;
     }
 
-    /* Traffic Sources - Stabilized */
+    /* Traffic Sources */
     .traffic-sources {
       background: white;
       border-radius: 24px;
@@ -266,13 +257,12 @@
       color: #2D3A45;
     }
 
-    /* Table Container - Stabilized */
+    /* Table */
     .table-container {
       background: white;
       border-radius: 24px;
       padding: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      /* Prevent flickering */
       transform: translateZ(0);
     }
 
@@ -341,11 +331,7 @@
         </div>
         <div style="text-align: right;">
           <div class="kpi-value" style="font-size: 1.5rem;">342</div>
-          <div style="color: #6B7A8D; font-size: 0.8rem;">Hot Leads</div>
-        </div>
-        <div style="text-align: right;">
-          <div class="kpi-value" style="font-size: 1.5rem;">27.4%</div>
-          <div style="color: #6B7A8D; font-size: 0.8rem;">Conversion</div>
+          <div style="color: #6B7A8D; font-size: 0.8rem;">Prospecting</div>
         </div>
       </div>
     </div>
@@ -361,7 +347,7 @@
         </select>
       </div>
       <div class="filter-item">
-        <div class="filter-label">Region</div>
+        <div class="filter-label">REGION</div>
         <select class="filter-select" id="regionFilter">
           <option value="">All Regions</option>
           <option value="Iraq">Iraq</option>
@@ -369,7 +355,7 @@
         </select>
       </div>
       <div class="filter-item">
-        <div class="filter-label">Priority</div>
+        <div class="filter-label">PRIORITY</div>
         <select class="filter-select" id="priorityFilter">
           <option value="">All Priorities</option>
           <option value="High">High</option>
@@ -378,20 +364,27 @@
         </select>
       </div>
       <div class="filter-item">
-        <div class="filter-label">Deal Stage</div>
+        <div class="filter-label">DEAL STAGE</div>
         <select class="filter-select" id="stageFilter">
           <option value="">All Stages</option>
-          <option value="Client Postponed">Client Postponed</option>
+          <option value="Prospecting">Prospecting</option>
+          <option value="Demo">Demo</option>
+          <option value="Proposal">Proposal</option>
           <option value="Negotiation">Negotiation</option>
+          <option value="Closed Won">Closed Won</option>
+          <option value="Closed Lost">Closed Lost</option>
         </select>
       </div>
       <div class="filter-item">
-        <div class="filter-label">Lead Aging</div>
-        <select class="filter-select" id="agingFilter">
-          <option value="">All Ages</option>
-          <option value="30">Last 30 Days</option>
-          <option value="60">Last 60 Days</option>
-        </select>
+        <div class="filter-label">DATE RANGE</div>
+        <div class="date-range">
+          <select class="filter-select" id="dateRangeFilter">
+            <option value="">All Time</option>
+            <option value="30">Last 30 Days</option>
+            <option value="60">Last 60 Days</option>
+            <option value="90">Last 90 Days</option>
+          </select>
+        </div>
       </div>
       <div>
         <button class="btn-apply" id="applyFilters">Apply</button>
@@ -408,18 +401,28 @@
       </div>
       <div class="kpi-card">
         <div class="kpi-value">342</div>
-        <div class="kpi-label">Hot Leads</div>
+        <div class="kpi-label">Prospecting Leads</div>
         <div class="kpi-trend trend-down">▼ -3% vs last month</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-value">27.4%</div>
-        <div class="kpi-label">Conversion Rate</div>
+        <div class="kpi-value">45.6%</div>
+        <div class="kpi-label">Demo/Proposal/Negotiation</div>
         <div class="kpi-trend trend-up">▲ +5% vs last month</div>
+        <div style="font-size: 0.7rem; color: #6B7A8D; margin-top: 5px;">of prospecting leads</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-value">₦45.6M</div>
-        <div class="kpi-label">Pipeline Value</div>
-        <div class="kpi-trend trend-up">▲ +8% vs last month</div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <span style="color: #A05AFF;">Demo</span>
+          <span style="font-weight: 600;">18%</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <span style="color: #FE9496;">Proposal</span>
+          <span style="font-weight: 600;">15%</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: #1BCFB4;">Negotiation</span>
+          <span style="font-weight: 600;">12%</span>
+        </div>
       </div>
     </div>
 
@@ -432,9 +435,9 @@
         </div>
       </div>
       <div class="chart-card">
-        <div class="chart-title">🔄 Priority Mix</div>
+        <div class="chart-title">⏳ Prospecting Aging</div>
         <div class="chart-container">
-          <canvas id="priorityChart"></canvas>
+          <canvas id="agingChart"></canvas>
         </div>
       </div>
     </div>
@@ -479,14 +482,13 @@
             </tr>
           </thead>
           <tbody id="tableBody">
-            <!-- Sample data -->
             <tr>
               <td>2026-01-20</td>
               <td>Disa Logistics</td>
               <td>Niyaz Abdullah</td>
               <td><span class="priority-badge priority-medium">Medium</span></td>
-              <td>Client Postponed</td>
-              <td>1M 9D</td>
+              <td>Prospecting</td>
+              <td>45 days</td>
               <td>Interested but busy right now</td>
             </tr>
             <tr>
@@ -494,8 +496,8 @@
               <td>Tech Solutions</td>
               <td>Ali Turabi</td>
               <td><span class="priority-badge priority-high">High</span></td>
-              <td>Negotiation</td>
-              <td>25D</td>
+              <td>Demo</td>
+              <td>25 days</td>
               <td>Demo scheduled next week</td>
             </tr>
             <tr>
@@ -503,8 +505,8 @@
               <td>Global Logistics</td>
               <td>Niyaz Abdullah</td>
               <td><span class="priority-badge priority-low">Low</span></td>
-              <td>New Lead</td>
-              <td>45D</td>
+              <td>Prospecting</td>
+              <td>60 days</td>
               <td>Sent proposal, waiting for feedback</td>
             </tr>
             <tr>
@@ -512,8 +514,8 @@
               <td>Express Solutions</td>
               <td>Ali Turabi</td>
               <td><span class="priority-badge priority-high">High</span></td>
-              <td>Demo</td>
-              <td>12D</td>
+              <td>Proposal</td>
+              <td>12 days</td>
               <td>Very interested, follow up Thursday</td>
             </tr>
             <tr>
@@ -521,8 +523,8 @@
               <td>United Industries</td>
               <td>Niyaz Abdullah</td>
               <td><span class="priority-badge priority-medium">Medium</span></td>
-              <td>Proposal Sent</td>
-              <td>32D</td>
+              <td>Negotiation</td>
+              <td>32 days</td>
               <td>Waiting for budget approval</td>
             </tr>
           </tbody>
@@ -532,13 +534,10 @@
   </div>
 
   <script>
-    // Register Chart.js plugin
     Chart.register(ChartDataLabels);
 
-    // Initialize charts with stable configuration
-    let dealsChart, priorityChart;
+    let dealsChart, agingChart;
 
-    // Wait for DOM to be fully loaded
     document.addEventListener('DOMContentLoaded', function() {
       initializeCharts();
     });
@@ -549,11 +548,11 @@
       dealsChart = new Chart(ctx1, {
         type: 'bar',
         data: {
-          labels: ['New', 'Contacted', 'Negotiation', 'Closed', 'Lost'],
+          labels: ['Prospecting', 'Demo', 'Proposal', 'Negotiation', 'Closed'],
           datasets: [{
             label: 'Number of Deals',
-            data: [45, 78, 32, 18, 12],
-            backgroundColor: ['#A05AFF', '#1BCFB4', '#FE9496', '#4BCBEB', '#9E58FF'],
+            data: [342, 85, 62, 41, 28],
+            backgroundColor: ['#A05AFF', '#4BCBEB', '#FE9496', '#1BCFB4', '#9E58FF'],
             borderRadius: 8,
             barPercentage: 0.7
           }]
@@ -561,16 +560,10 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          animation: {
-            duration: 500 // Smooth but not flickery
-          },
+          animation: { duration: 500 },
           plugins: {
             legend: { display: false },
-            tooltip: {
-              backgroundColor: '#2D3A45',
-              titleColor: 'white',
-              bodyColor: 'white'
-            }
+            tooltip: { backgroundColor: '#2D3A45' }
           },
           scales: {
             y: {
@@ -586,14 +579,14 @@
         }
       });
 
-      // Priority Mix Chart
-      const ctx2 = document.getElementById('priorityChart').getContext('2d');
-      priorityChart = new Chart(ctx2, {
+      // Prospecting Aging Donut Chart
+      const ctx2 = document.getElementById('agingChart').getContext('2d');
+      agingChart = new Chart(ctx2, {
         type: 'doughnut',
         data: {
-          labels: ['High', 'Medium', 'Low'],
+          labels: ['0-30 days', '31-60 days', '60+ days'],
           datasets: [{
-            data: [35, 45, 20],
+            data: [48, 32, 20],
             backgroundColor: ['#A05AFF', '#FE9496', '#1BCFB4'],
             borderWidth: 0
           }]
@@ -602,16 +595,17 @@
           cutout: '65%',
           responsive: true,
           maintainAspectRatio: false,
-          animation: {
-            duration: 500
-          },
+          animation: { duration: 500 },
           plugins: {
             legend: { 
               position: 'bottom',
               labels: { color: '#6B7A8D' }
             },
-            tooltip: {
-              backgroundColor: '#2D3A45'
+            tooltip: { backgroundColor: '#2D3A45' },
+            datalabels: {
+              formatter: (value) => value + '%',
+              color: 'white',
+              font: { weight: 'bold' }
             }
           }
         }
@@ -620,20 +614,18 @@
 
     // Filter functionality
     document.getElementById('applyFilters').addEventListener('click', function() {
-      // Add loading class to prevent flickering during update
       document.body.classList.add('loading');
       
-      // Simulate filter action (replace with actual filter logic)
+      // Simulate filter action
       setTimeout(function() {
         document.body.classList.remove('loading');
-        // You can add actual filtering logic here later
+        alert('Filters applied! (Demo - Connect Google Sheet for real data)');
       }, 300);
     });
 
     document.getElementById('resetFilters').addEventListener('click', function() {
       document.body.classList.add('loading');
       
-      // Reset all selects
       document.querySelectorAll('.filter-select').forEach(select => select.value = '');
       
       setTimeout(function() {
@@ -641,14 +633,13 @@
       }, 300);
     });
 
-    // Prevent flickering on window resize
+    // Resize handler
     let resizeTimeout;
     window.addEventListener('resize', function() {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(function() {
-        // Redraw charts smoothly on resize
         if (dealsChart) dealsChart.update();
-        if (priorityChart) priorityChart.update();
+        if (agingChart) agingChart.update();
       }, 100);
     });
   </script>

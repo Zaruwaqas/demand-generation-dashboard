@@ -80,7 +80,7 @@
       margin-bottom: 5px;
     }
 
-    .filter-select, .filter-input {
+    .filter-select {
       width: 100%;
       padding: 10px;
       border: 1px solid #E9EDF2;
@@ -90,7 +90,7 @@
       background: white;
     }
 
-    /* Fix for date inputs - make them visible */
+    /* Date range styling */
     .date-range {
       display: flex;
       gap: 10px;
@@ -113,6 +113,14 @@
       cursor: pointer;
     }
 
+    /* Button container - Apply above Reset */
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 120px;
+    }
+
     .btn-apply {
       background: #A05AFF;
       color: white;
@@ -122,7 +130,7 @@
       font-weight: 500;
       cursor: pointer;
       transition: background-color 0.2s ease;
-      white-space: nowrap;
+      width: 100%;
     }
 
     .btn-apply:hover {
@@ -137,7 +145,7 @@
       border-radius: 40px;
       cursor: pointer;
       transition: all 0.2s ease;
-      white-space: nowrap;
+      width: 100%;
     }
 
     .btn-reset:hover {
@@ -357,7 +365,7 @@
           <input type="date" id="endDate" placeholder="End Date">
         </div>
       </div>
-      <div>
+      <div class="button-container">
         <button class="btn-apply" id="applyFilters">Apply</button>
         <button class="btn-reset" id="resetFilters">Reset</button>
       </div>
@@ -489,7 +497,6 @@
         const companyIdx = headers.findIndex(h => h.includes('CompanyName'));
         const priorityIdx = headers.findIndex(h => h.includes('Priority'));
         const stageIdx = headers.findIndex(h => h.includes('Deal Stage'));
-        const agingIdx = headers.findIndex(h => h.includes('Lead Aging (Days)'));
         const notesIdx = headers.findIndex(h => h.includes('KAM Notes'));
         const countryIdx = headers.findIndex(h => h.includes('Country'));
         const kamIdx = headers.findIndex(h => h.includes('Key Account Manager'));
@@ -502,7 +509,7 @@
         for (let i = 1; i < lines.length; i++) {
           const values = parseCSVLine(lines[i]);
           
-          // Calculate aging based on Lead Sent Date if not provided by script
+          // Calculate aging based on Lead Sent Date
           let aging = 0;
           if (dateIdx >= 0 && values[dateIdx]) {
             const leadDate = new Date(values[dateIdx]);
@@ -654,14 +661,22 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
+          plugins: { 
+            legend: { display: false },
+            datalabels: { display: false }
+          },
           scales: {
-            y: { beginAtZero: true }
+            y: { 
+              beginAtZero: true,
+              ticks: { stepSize: 1 }
+            }
           }
         }
       });
 
-      // Aging Chart
+      // Aging Chart - Fixed percentage calculation
+      const agingTotal = aging0to30 + aging31to60 + aging60plus;
+      
       if (charts.agingChart) charts.agingChart.destroy();
       
       const ctx2 = document.getElementById('agingChart').getContext('2d');
@@ -682,10 +697,13 @@
           plugins: { 
             legend: { position: 'bottom' },
             datalabels: {
-              formatter: (value, ctx) => {
-                const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                return total > 0 ? ((value / total) * 100).toFixed(1) + '%' : '0%';
-              }
+              display: agingTotal > 0,
+              formatter: (value) => {
+                const percentage = agingTotal > 0 ? ((value / agingTotal) * 100).toFixed(1) : 0;
+                return percentage + '%';
+              },
+              color: 'white',
+              font: { weight: 'bold', size: 12 }
             }
           }
         }
@@ -695,6 +713,11 @@
     function updateTable() {
       const tbody = document.getElementById('tableBody');
       tbody.innerHTML = '';
+      
+      if (filteredData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center">No records match filters</td></tr>';
+        return;
+      }
       
       filteredData.slice(0, 100).forEach(row => {
         const tr = document.createElement('tr');

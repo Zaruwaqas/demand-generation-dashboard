@@ -241,6 +241,12 @@
       border-radius: 24px;
       padding: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .chart-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
     }
 
     .chart-title {
@@ -262,6 +268,7 @@
       display: block;
       width: 100% !important;
       height: 100% !important;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
     }
 
     /* Aging Stats */
@@ -446,7 +453,7 @@
       </div>
     </div>
 
-    <!-- Charts Grid - 3 columns -->
+    <!-- Charts Grid - 3 columns with 3D effect -->
     <div class="charts-grid">
       <div class="chart-card">
         <div class="chart-title">🎯 Deals by Stage</div>
@@ -465,6 +472,22 @@
         <div class="chart-container">
           <canvas id="stagesByAgingChart"></canvas>
         </div>
+      </div>
+    </div>
+
+    <!-- Aging Stats - Moved outside charts grid -->
+    <div class="aging-stats" id="agingStats" style="margin-bottom: 20px;">
+      <div class="aging-item">
+        <div class="aging-label">0-30 days</div>
+        <div class="aging-value" id="aging0to30">0</div>
+      </div>
+      <div class="aging-item">
+        <div class="aging-label">31-60 days</div>
+        <div class="aging-value" id="aging31to60">0</div>
+      </div>
+      <div class="aging-item">
+        <div class="aging-label">60+ days</div>
+        <div class="aging-value" id="aging60plus">0</div>
       </div>
     </div>
 
@@ -668,6 +691,10 @@
       const aging31to60 = filteredData.filter(row => row.aging > 30 && row.aging <= 60).length;
       const aging60plus = filteredData.filter(row => row.aging > 60).length;
       
+      document.getElementById('aging0to30').innerText = aging0to30;
+      document.getElementById('aging31to60').innerText = aging31to60;
+      document.getElementById('aging60plus').innerText = aging60plus;
+
       // Calculate stages by aging for new chart
       const stagesByAging = {
         '0-30': {
@@ -700,21 +727,47 @@
     }
 
     function updateCharts(prospecting, demo, proposal, negotiation, aging0to30, aging31to60, aging60plus, stagesByAging) {
-      // Chart 1: Deals by Stage
+      // Chart 1: Deals by Stage with 3D effect
       const stageLabels = ['Prospecting', 'Demo', 'Proposal', 'Negotiation'];
       const stageData = [prospecting, demo, proposal, negotiation];
 
       if (charts.dealsChart) charts.dealsChart.destroy();
       
       const ctx1 = document.getElementById('dealsByStageChart').getContext('2d');
+      
+      // Create gradient for 3D effect
+      const gradients = stageData.map((value, index) => {
+        const gradient = ctx1.createLinearGradient(0, 0, 0, 400);
+        if (index === 0) { // Purple
+          gradient.addColorStop(0, '#A05AFF');
+          gradient.addColorStop(0.7, '#7A3ECC');
+          gradient.addColorStop(1, '#5A2E99');
+        } else if (index === 1) { // Blue
+          gradient.addColorStop(0, '#4BCBEB');
+          gradient.addColorStop(0.7, '#2A9BBF');
+          gradient.addColorStop(1, '#1A6B8A');
+        } else if (index === 2) { // Coral
+          gradient.addColorStop(0, '#FE9496');
+          gradient.addColorStop(0.7, '#E06A6C');
+          gradient.addColorStop(1, '#B34547');
+        } else { // Teal
+          gradient.addColorStop(0, '#1BCFB4');
+          gradient.addColorStop(0.7, '#129F8A');
+          gradient.addColorStop(1, '#0A6F60');
+        }
+        return gradient;
+      });
+
       charts.dealsChart = new Chart(ctx1, {
         type: 'bar',
         data: {
           labels: stageLabels,
           datasets: [{
             data: stageData,
-            backgroundColor: ['#A05AFF', '#4BCBEB', '#FE9496', '#1BCFB4'],
-            borderRadius: 8
+            backgroundColor: gradients,
+            borderRadius: 8,
+            borderWidth: 1,
+            borderColor: 'rgba(0,0,0,0.2)'
           }]
         },
         options: {
@@ -742,20 +795,36 @@
         }
       });
 
-      // Chart 2: Lead Aging Donut
+      // Chart 2: Lead Aging Donut with 3D effect
       const agingTotal = aging0to30 + aging31to60 + aging60plus;
       
       if (charts.agingChart) charts.agingChart.destroy();
       
       const ctx2 = document.getElementById('agingChart').getContext('2d');
+      
+      // Create gradients for donut
+      const agingGradients = [
+        ctx2.createLinearGradient(0, 0, 100, 100),
+        ctx2.createLinearGradient(0, 0, 100, 100),
+        ctx2.createLinearGradient(0, 0, 100, 100)
+      ];
+      
+      agingGradients[0].addColorStop(0, '#A05AFF');
+      agingGradients[0].addColorStop(1, '#7A3ECC');
+      agingGradients[1].addColorStop(0, '#FE9496');
+      agingGradients[1].addColorStop(1, '#E06A6C');
+      agingGradients[2].addColorStop(0, '#1BCFB4');
+      agingGradients[2].addColorStop(1, '#129F8A');
+
       charts.agingChart = new Chart(ctx2, {
         type: 'doughnut',
         data: {
           labels: ['0-30 days', '31-60 days', '60+ days'],
           datasets: [{
             data: [aging0to30, aging31to60, aging60plus],
-            backgroundColor: ['#A05AFF', '#FE9496', '#1BCFB4'],
-            borderWidth: 0
+            backgroundColor: agingGradients,
+            borderWidth: 1,
+            borderColor: 'rgba(0,0,0,0.2)'
           }]
         },
         options: {
@@ -777,10 +846,35 @@
         }
       });
 
-      // Chart 3: Stages by Aging (Stacked Bar)
+      // Chart 3: Stages by Aging with 3D effect
       if (charts.stagesByAgingChart) charts.stagesByAgingChart.destroy();
       
       const ctx3 = document.getElementById('stagesByAgingChart').getContext('2d');
+      
+      // Create gradients for each stage
+      const stageGradients = [
+        ctx3.createLinearGradient(0, 0, 0, 400), // Prospecting
+        ctx3.createLinearGradient(0, 0, 0, 400), // Demo
+        ctx3.createLinearGradient(0, 0, 0, 400), // Proposal
+        ctx3.createLinearGradient(0, 0, 0, 400)  // Negotiation
+      ];
+      
+      stageGradients[0].addColorStop(0, '#A05AFF');
+      stageGradients[0].addColorStop(0.7, '#7A3ECC');
+      stageGradients[0].addColorStop(1, '#5A2E99');
+      
+      stageGradients[1].addColorStop(0, '#4BCBEB');
+      stageGradients[1].addColorStop(0.7, '#2A9BBF');
+      stageGradients[1].addColorStop(1, '#1A6B8A');
+      
+      stageGradients[2].addColorStop(0, '#FE9496');
+      stageGradients[2].addColorStop(0.7, '#E06A6C');
+      stageGradients[2].addColorStop(1, '#B34547');
+      
+      stageGradients[3].addColorStop(0, '#1BCFB4');
+      stageGradients[3].addColorStop(0.7, '#129F8A');
+      stageGradients[3].addColorStop(1, '#0A6F60');
+
       charts.stagesByAgingChart = new Chart(ctx3, {
         type: 'bar',
         data: {
@@ -789,28 +883,36 @@
             {
               label: 'Prospecting',
               data: [stagesByAging['0-30'].prospecting, stagesByAging['31-60'].prospecting, stagesByAging['60+'].prospecting],
-              backgroundColor: '#A05AFF',
+              backgroundColor: stageGradients[0],
+              borderWidth: 1,
+              borderColor: 'rgba(0,0,0,0.2)',
               stack: 'Stack 0',
               borderRadius: 4
             },
             {
               label: 'Demo',
               data: [stagesByAging['0-30'].demo, stagesByAging['31-60'].demo, stagesByAging['60+'].demo],
-              backgroundColor: '#4BCBEB',
+              backgroundColor: stageGradients[1],
+              borderWidth: 1,
+              borderColor: 'rgba(0,0,0,0.2)',
               stack: 'Stack 0',
               borderRadius: 4
             },
             {
               label: 'Proposal',
               data: [stagesByAging['0-30'].proposal, stagesByAging['31-60'].proposal, stagesByAging['60+'].proposal],
-              backgroundColor: '#FE9496',
+              backgroundColor: stageGradients[2],
+              borderWidth: 1,
+              borderColor: 'rgba(0,0,0,0.2)',
               stack: 'Stack 0',
               borderRadius: 4
             },
             {
               label: 'Negotiation',
               data: [stagesByAging['0-30'].negotiation, stagesByAging['31-60'].negotiation, stagesByAging['60+'].negotiation],
-              backgroundColor: '#1BCFB4',
+              backgroundColor: stageGradients[3],
+              borderWidth: 1,
+              borderColor: 'rgba(0,0,0,0.2)',
               stack: 'Stack 0',
               borderRadius: 4
             }

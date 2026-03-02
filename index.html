@@ -89,7 +89,7 @@
       font-weight: 500;
     }
 
-    /* Filter Panel */
+    /* Filter Panel - Fixed layout */
     .filter-panel {
       background: white;
       border-radius: 20px;
@@ -97,50 +97,51 @@
       margin-bottom: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       display: flex;
-      gap: 15px;
+      gap: 12px;
       flex-wrap: wrap;
       align-items: flex-end;
     }
 
     .filter-item {
       flex: 1;
-      min-width: 150px;
+      min-width: 130px;
     }
 
     .filter-label {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 600;
       text-transform: uppercase;
       color: #6B7A8D;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
+      white-space: nowrap;
     }
 
     .filter-select {
       width: 100%;
-      padding: 10px;
+      padding: 8px 10px;
       border: 1px solid #E9EDF2;
-      border-radius: 12px;
-      font-size: 0.9rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
       color: #2D3A45;
       background: white;
     }
 
-    /* Date range styling */
+    /* Date range - made smaller */
     .date-range {
       display: flex;
-      gap: 10px;
+      gap: 6px;
       width: 100%;
     }
 
     .date-range input[type="date"] {
       flex: 1;
-      padding: 10px;
+      padding: 8px 10px;
       border: 1px solid #E9EDF2;
-      border-radius: 12px;
-      font-size: 0.9rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
       color: #2D3A45;
       background: white;
-      min-width: 140px;
+      min-width: 120px;
     }
 
     .date-range input[type="date"]::-webkit-calendar-picker-indicator {
@@ -148,23 +149,25 @@
       cursor: pointer;
     }
 
-    /* Button container - side by side */
+    /* Button container - fixed width */
     .button-container {
       display: flex;
-      gap: 10px;
-      min-width: 200px;
+      gap: 8px;
+      min-width: 160px;
     }
 
     .btn-apply {
       background: #A05AFF;
       color: white;
       border: none;
-      padding: 10px 25px;
-      border-radius: 40px;
+      padding: 8px 16px;
+      border-radius: 30px;
       font-weight: 500;
+      font-size: 0.9rem;
       cursor: pointer;
       transition: background-color 0.2s ease;
       flex: 1;
+      white-space: nowrap;
     }
 
     .btn-apply:hover {
@@ -175,11 +178,13 @@
       background: white;
       color: #6B7A8D;
       border: 1px solid #E9EDF2;
-      padding: 10px 25px;
-      border-radius: 40px;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 0.9rem;
       cursor: pointer;
       transition: all 0.2s ease;
       flex: 1;
+      white-space: nowrap;
     }
 
     .btn-reset:hover {
@@ -257,11 +262,6 @@
       display: block;
       width: 100% !important;
       height: 100% !important;
-    }
-
-    /* Chart labels white */
-    .chart-card canvas {
-      color: white !important;
     }
 
     /* Aging Stats */
@@ -370,7 +370,7 @@
       </div>
     </div>
 
-    <!-- Filters -->
+    <!-- Filters - Fixed layout -->
     <div class="filter-panel">
       <div class="filter-item">
         <div class="filter-label">KAM</div>
@@ -402,8 +402,8 @@
       <div class="filter-item">
         <div class="filter-label">DATE RANGE</div>
         <div class="date-range">
-          <input type="date" id="startDate" placeholder="Start Date">
-          <input type="date" id="endDate" placeholder="End Date">
+          <input type="date" id="startDate" placeholder="Start">
+          <input type="date" id="endDate" placeholder="End">
         </div>
       </div>
       <div class="button-container">
@@ -691,7 +691,7 @@
     }
 
     function updateCharts(prospecting, demo, proposal, negotiation, aging0to30, aging31to60, aging60plus) {
-      // Deals by Stage Chart
+      // Deals by Stage Chart - Fixed to show numbers
       const stageLabels = ['Prospecting', 'Demo', 'Proposal', 'Negotiation'];
       const stageData = [prospecting, demo, proposal, negotiation];
 
@@ -713,13 +713,14 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: { 
-            legend: { 
-              labels: { color: 'white' }
-            },
+            legend: { display: false },
             datalabels: {
               color: 'white',
-              font: { weight: 'bold' },
-              formatter: (value) => value
+              font: { weight: 'bold', size: 14 },
+              anchor: 'end',
+              align: 'top',
+              offset: 4,
+              formatter: (value) => value > 0 ? value : ''
             }
           },
           scales: {
@@ -727,12 +728,12 @@
               beginAtZero: true,
               ticks: { 
                 stepSize: 1,
-                color: 'white'
+                color: '#2D3A45'
               },
-              grid: { color: 'rgba(255,255,255,0.1)' }
+              grid: { color: '#E9EDF2' }
             },
             x: {
-              ticks: { color: 'white' },
+              ticks: { color: '#2D3A45' },
               grid: { display: false }
             }
           }
@@ -762,7 +763,7 @@
           plugins: { 
             legend: { 
               position: 'bottom',
-              labels: { color: 'white' }
+              labels: { color: '#2D3A45' }
             },
             datalabels: {
               display: agingTotal > 0,

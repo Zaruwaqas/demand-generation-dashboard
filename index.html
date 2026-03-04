@@ -658,6 +658,8 @@
 
         const headers = parseCSVLine(lines[0]);
         console.log('Headers found:', headers);
+// ADD THIS LINE:
+console.log('Looking for "Lead Sources" among headers:', headers.includes('Lead Sources'));
         
         // Find column indices
         const dateIdx = headers.findIndex(h => h.includes('Lead Sent Date'));

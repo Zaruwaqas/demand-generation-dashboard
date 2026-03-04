@@ -264,6 +264,53 @@
       height: 100% !important;
     }
 
+    /* Lead Sources Section - NEW */
+    .lead-sources {
+      background: white;
+      border-radius: 24px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .source-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .source-label {
+      width: 120px;
+      font-weight: 500;
+      color: #2D3A45;
+    }
+
+    .source-bar-container {
+      flex: 1;
+      height: 12px;
+      background: #E9EDF2;
+      border-radius: 20px;
+      margin: 0 15px;
+      overflow: hidden;
+    }
+
+    .source-bar {
+      height: 100%;
+      border-radius: 20px;
+      transition: width 0.3s ease;
+    }
+
+    .source-percentage {
+      width: 60px;
+      font-weight: 600;
+      color: #2D3A45;
+      text-align: right;
+    }
+
+    .purple-bar { background: #A05AFF; }
+    .teal-bar { background: #1BCFB4; }
+    .coral-bar { background: #FE9496; }
+
     /* Aging Stats */
     .aging-stats {
       display: flex;
@@ -468,6 +515,32 @@
       </div>
     </div>
 
+    <!-- Lead Sources Section - RESTORED from screenshot -->
+    <div class="lead-sources">
+      <div class="chart-title" style="margin-bottom: 20px;">📊 Lead Sources</div>
+      <div class="source-item">
+        <span class="source-label">Search Engines</span>
+        <div class="source-bar-container">
+          <div class="source-bar purple-bar" id="sourceSearchBar" style="width: 0%;"></div>
+        </div>
+        <span class="source-percentage" id="sourceSearchPct">0%</span>
+      </div>
+      <div class="source-item">
+        <span class="source-label">Direct Click</span>
+        <div class="source-bar-container">
+          <div class="source-bar teal-bar" id="sourceDirectBar" style="width: 0%;"></div>
+        </div>
+        <span class="source-percentage" id="sourceDirectPct">0%</span>
+      </div>
+      <div class="source-item">
+        <span class="source-label">Social Media</span>
+        <div class="source-bar-container">
+          <div class="source-bar coral-bar" id="sourceSocialBar" style="width: 0%;"></div>
+        </div>
+        <span class="source-percentage" id="sourceSocialPct">0%</span>
+      </div>
+    </div>
+
     <!-- KAM Notes Table -->
     <div class="table-container">
       <div class="d-flex justify-content-between align-items-center mb-3">
@@ -540,6 +613,7 @@
         const notesIdx = headers.findIndex(h => h.includes('KAM Notes'));
         const countryIdx = headers.findIndex(h => h.includes('Country'));
         const kamIdx = headers.findIndex(h => h.includes('Key Account Manager'));
+        const sourceIdx = headers.findIndex(h => h.includes('Lead Source')); // Added for Lead Sources
 
         allData = [];
         
@@ -567,7 +641,8 @@
             aging: aging,
             notes: values[notesIdx] || '',
             country: values[countryIdx] || '',
-            kam: values[kamIdx] || ''
+            kam: values[kamIdx] || '',
+            source: values[sourceIdx] || '' // Added for Lead Sources
           };
           
           allData.push(row);
@@ -668,6 +743,30 @@
       const aging31to60 = filteredData.filter(row => row.aging > 30 && row.aging <= 60).length;
       const aging60plus = filteredData.filter(row => row.aging > 60).length;
       
+      document.getElementById('aging0to30').innerText = aging0to30;
+      document.getElementById('aging31to60').innerText = aging31to60;
+      document.getElementById('aging60plus').innerText = aging60plus;
+
+      // Calculate Lead Sources for the new section
+      const sources = {};
+      filteredData.forEach(row => {
+        if (row.source) {
+          sources[row.source] = (sources[row.source] || 0) + 1;
+        }
+      });
+      
+      // Update Lead Sources bars
+      const searchPct = total > 0 ? ((sources['Search Engines'] || 0) / total * 100).toFixed(1) : 0;
+      const directPct = total > 0 ? ((sources['Direct Click'] || 0) / total * 100).toFixed(1) : 0;
+      const socialPct = total > 0 ? ((sources['Social Media'] || 0) / total * 100).toFixed(1) : 0;
+      
+      document.getElementById('sourceSearchBar').style.width = searchPct + '%';
+      document.getElementById('sourceSearchPct').innerText = searchPct + '%';
+      document.getElementById('sourceDirectBar').style.width = directPct + '%';
+      document.getElementById('sourceDirectPct').innerText = directPct + '%';
+      document.getElementById('sourceSocialBar').style.width = socialPct + '%';
+      document.getElementById('sourceSocialPct').innerText = socialPct + '%';
+
       // Calculate stages by aging for new chart
       const stagesByAging = {
         '0-30': {

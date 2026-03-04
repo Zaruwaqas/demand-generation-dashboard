@@ -89,6 +89,17 @@
       font-weight: 500;
     }
 
+    /* Error Message */
+    .error-message {
+      background: #FFEBEE;
+      color: #D32F2F;
+      padding: 20px;
+      border-radius: 16px;
+      margin: 20px 0;
+      text-align: center;
+      border: 1px solid #FFCDD2;
+    }
+
     /* Filter Panel - Ultra compact */
     .filter-panel {
       background: white;
@@ -264,7 +275,7 @@
       height: 100% !important;
     }
 
-    /* Lead Sources Section - NEW */
+    /* Lead Sources Section */
     .lead-sources {
       background: white;
       border-radius: 24px;
@@ -515,7 +526,7 @@
       </div>
     </div>
 
-    <!-- Lead Sources Section - RESTORED from screenshot -->
+    <!-- Lead Sources Section -->
     <div class="lead-sources">
       <div class="chart-title" style="margin-bottom: 20px;">📊 Lead Sources</div>
       <div class="source-item">
@@ -538,6 +549,22 @@
           <div class="source-bar coral-bar" id="sourceSocialBar" style="width: 0%;"></div>
         </div>
         <span class="source-percentage" id="sourceSocialPct">0%</span>
+      </div>
+    </div>
+
+    <!-- Aging Stats -->
+    <div class="aging-stats" id="agingStats" style="margin-bottom: 20px;">
+      <div class="aging-item">
+        <div class="aging-label">0-30 days</div>
+        <div class="aging-value" id="aging0to30">0</div>
+      </div>
+      <div class="aging-item">
+        <div class="aging-label">31-60 days</div>
+        <div class="aging-value" id="aging31to60">0</div>
+      </div>
+      <div class="aging-item">
+        <div class="aging-label">60+ days</div>
+        <div class="aging-value" id="aging60plus">0</div>
       </div>
     </div>
 
@@ -573,9 +600,10 @@
     Chart.register(ChartDataLabels);
 
     // ===========================================
-    // YOUR APPS SCRIPT URL
+    // YOUR APPS SCRIPT URL - UPDATE THIS!
     // ===========================================
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyqBRJiH6fAUuITRYOyqygXbyrgWp7FQO4Tkpmq_SX0rkQRcSEVU7xteTEvR7jdzqH7iA/exec';
+    // ===========================================
     
     // Globals
     let allData = [];
@@ -590,20 +618,46 @@
       }, 300);
     }
 
+    // Show error message
+    function showError(message) {
+      const container = document.querySelector('.dashboard-container');
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.innerHTML = `
+        <strong>❌ Failed to load data</strong><br>
+        ${message}<br><br>
+        <button class="btn-apply" onclick="location.reload()">Retry</button>
+      `;
+      container.insertBefore(errorDiv, container.firstChild);
+      hideLoader();
+    }
+
     // ===========================================
     // Load Data
     // ===========================================
     async function loadData() {
       try {
+        console.log('Fetching data from:', APPS_SCRIPT_URL);
         const response = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now());
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const csvText = await response.text();
+        console.log('Data received, length:', csvText.length);
         
         if (csvText.startsWith('Error:')) {
           throw new Error(csvText);
         }
 
         const lines = csvText.split('\n').filter(line => line.trim());
+        if (lines.length < 2) {
+          throw new Error('No data rows found');
+        }
+
         const headers = parseCSVLine(lines[0]);
+        console.log('Headers found:', headers);
         
         // Find column indices
         const dateIdx = headers.findIndex(h => h.includes('Lead Sent Date'));
@@ -613,40 +667,32 @@
         const notesIdx = headers.findIndex(h => h.includes('KAM Notes'));
         const countryIdx = headers.findIndex(h => h.includes('Country'));
         const kamIdx = headers.findIndex(h => h.includes('Key Account Manager'));
-        const sourceIdx = headers.findIndex(h => h.includes('Lead Source')); // Added for Lead Sources
+        const sourceIdx = headers.findIndex(h => h.includes('Lead Source'));
+
+        console.log('Column indices:', { dateIdx, companyIdx, priorityIdx, stageIdx, notesIdx, countryIdx, kamIdx, sourceIdx });
 
         allData = [];
         
-        // Get today's date for aging calculation
-        const today = new Date();
-        
         for (let i = 1; i < lines.length; i++) {
           const values = parseCSVLine(lines[i]);
-          
-          // Calculate aging based on Lead Sent Date
-          let aging = 0;
-          if (dateIdx >= 0 && values[dateIdx]) {
-            const leadDate = new Date(values[dateIdx]);
-            if (!isNaN(leadDate)) {
-              const diffTime = today - leadDate;
-              aging = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            }
-          }
           
           const row = {
             date: values[dateIdx] || '',
             company: values[companyIdx] || '',
             priority: values[priorityIdx] || '',
             stage: values[stageIdx] || '',
-            aging: aging,
+            aging: parseInt(values[values.length - 1]) || 0, // Last column is aging
             notes: values[notesIdx] || '',
             country: values[countryIdx] || '',
             kam: values[kamIdx] || '',
-            source: values[sourceIdx] || '' // Added for Lead Sources
+            source: values[sourceIdx] || ''
           };
           
           allData.push(row);
         }
+
+        console.log(`Loaded ${allData.length} records`);
+        console.log('Sample row:', allData[0]);
 
         filteredData = [...allData];
         populateFilters();
@@ -654,9 +700,8 @@
         hideLoader();
 
       } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('tableBody').innerHTML = `<tr><td colspan="8" class="text-center text-danger">Error loading data: ${error.message}</td></tr>`;
-        hideLoader();
+        console.error('Error loading data:', error);
+        showError(error.message);
       }
     }
 
@@ -747,7 +792,7 @@
       document.getElementById('aging31to60').innerText = aging31to60;
       document.getElementById('aging60plus').innerText = aging60plus;
 
-      // Calculate Lead Sources for the new section
+      // Calculate Lead Sources
       const sources = {};
       filteredData.forEach(row => {
         if (row.source) {
@@ -767,7 +812,7 @@
       document.getElementById('sourceSocialBar').style.width = socialPct + '%';
       document.getElementById('sourceSocialPct').innerText = socialPct + '%';
 
-      // Calculate stages by aging for new chart
+      // Calculate stages by aging
       const stagesByAging = {
         '0-30': {
           prospecting: filteredData.filter(row => row.stage?.toLowerCase().includes('prospecting') && row.aging > 0 && row.aging <= 30).length,

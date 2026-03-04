@@ -792,25 +792,51 @@
       document.getElementById('aging31to60').innerText = aging31to60;
       document.getElementById('aging60plus').innerText = aging60plus;
 
-      // Calculate Lead Sources
+      // ===========================================
+      // FIXED: Lead Sources calculation with flexible matching
+      // ===========================================
       const sources = {};
       filteredData.forEach(row => {
-        if (row.source) {
-          sources[row.source] = (sources[row.source] || 0) + 1;
+        if (row.source && row.source.trim() !== '') {
+          const sourceLower = row.source.toLowerCase().trim();
+          
+          // More flexible matching for different source names
+          if (sourceLower.includes('search') || sourceLower.includes('engine') || sourceLower.includes('google')) {
+            sources['Search Engines'] = (sources['Search Engines'] || 0) + 1;
+          } 
+          else if (sourceLower.includes('direct') || sourceLower.includes('click') || sourceLower.includes('website')) {
+            sources['Direct Click'] = (sources['Direct Click'] || 0) + 1;
+          }
+          else if (sourceLower.includes('social') || sourceLower.includes('media') || 
+                   sourceLower.includes('facebook') || sourceLower.includes('linkedin') || 
+                   sourceLower.includes('twitter') || sourceLower.includes('instagram')) {
+            sources['Social Media'] = (sources['Social Media'] || 0) + 1;
+          }
+          else {
+            // Group other sources
+            sources['Others'] = (sources['Others'] || 0) + 1;
+          }
         }
       });
-      
-      // Update Lead Sources bars
-      const searchPct = total > 0 ? ((sources['Search Engines'] || 0) / total * 100).toFixed(1) : 0;
-      const directPct = total > 0 ? ((sources['Direct Click'] || 0) / total * 100).toFixed(1) : 0;
-      const socialPct = total > 0 ? ((sources['Social Media'] || 0) / total * 100).toFixed(1) : 0;
-      
+
+      // Debug: Log the sources to console
+      console.log('Lead Sources distribution:', sources);
+      console.log('Total filtered records:', filteredData.length);
+
+      // Calculate percentages based on total records
+      const searchPct = filteredData.length > 0 ? ((sources['Search Engines'] || 0) / filteredData.length * 100).toFixed(1) : 0;
+      const directPct = filteredData.length > 0 ? ((sources['Direct Click'] || 0) / filteredData.length * 100).toFixed(1) : 0;
+      const socialPct = filteredData.length > 0 ? ((sources['Social Media'] || 0) / filteredData.length * 100).toFixed(1) : 0;
+
+      // Update the DOM
       document.getElementById('sourceSearchBar').style.width = searchPct + '%';
       document.getElementById('sourceSearchPct').innerText = searchPct + '%';
       document.getElementById('sourceDirectBar').style.width = directPct + '%';
       document.getElementById('sourceDirectPct').innerText = directPct + '%';
       document.getElementById('sourceSocialBar').style.width = socialPct + '%';
       document.getElementById('sourceSocialPct').innerText = socialPct + '%';
+
+      console.log('Source percentages:', { search: searchPct + '%', direct: directPct + '%', social: socialPct + '%' });
 
       // Calculate stages by aging
       const stagesByAging = {

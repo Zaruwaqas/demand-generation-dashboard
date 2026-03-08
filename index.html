@@ -20,20 +20,20 @@
     body { 
       background: #F5F7FA;
       font-family: 'Inter', sans-serif;
-      padding: 20px;
+      padding: 15px; /* Reduced padding */
     }
 
     .dashboard-container {
-      max-width: 1800px;
+      max-width: 1600px; /* Reduced max-width */
       margin: 0 auto;
     }
 
-    /* Header */
+    /* Header - more compact */
     .dashboard-header {
       background: white;
-      border-radius: 24px;
-      padding: 20px 30px;
-      margin-bottom: 20px;
+      border-radius: 20px;
+      padding: 15px 25px;
+      margin-bottom: 15px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       border-left: 6px solid #A05AFF;
     }
@@ -42,15 +42,16 @@
       color: #2D3A45;
       font-weight: 600;
       margin: 0;
+      font-size: 1.5rem;
     }
 
     .secure-badge {
       background: #A05AFF;
       color: white;
-      padding: 5px 15px;
+      padding: 4px 12px;
       border-radius: 40px;
-      font-size: 0.8rem;
-      margin-left: 15px;
+      font-size: 0.75rem;
+      margin-left: 10px;
       display: inline-block;
     }
 
@@ -70,10 +71,10 @@
     }
 
     .spinner {
-      width: 60px;
-      height: 60px;
-      border: 5px solid #E9EDF2;
-      border-top: 5px solid #A05AFF;
+      width: 50px;
+      height: 50px;
+      border: 4px solid #E9EDF2;
+      border-top: 4px solid #A05AFF;
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -84,7 +85,7 @@
     }
 
     .loading-text {
-      margin-top: 20px;
+      margin-top: 15px;
       color: #2D3A45;
       font-weight: 500;
     }
@@ -93,33 +94,33 @@
     .error-message {
       background: #FFEBEE;
       color: #D32F2F;
-      padding: 20px;
-      border-radius: 16px;
-      margin: 20px 0;
+      padding: 15px;
+      border-radius: 12px;
+      margin: 15px 0;
       text-align: center;
       border: 1px solid #FFCDD2;
     }
 
-    /* Filter Panel - Ultra compact */
+    /* Filter Panel - more compact */
     .filter-panel {
       background: white;
       border-radius: 16px;
-      padding: 15px;
-      margin-bottom: 20px;
+      padding: 12px;
+      margin-bottom: 15px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
       align-items: center;
     }
 
     .filter-item {
       flex: 1;
-      min-width: 110px;
+      min-width: 100px;
     }
 
     .filter-label {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 600;
       text-transform: uppercase;
       color: #6B7A8D;
@@ -128,15 +129,15 @@
 
     .filter-select {
       width: 100%;
-      padding: 6px 8px;
+      padding: 5px 8px;
       border: 1px solid #E9EDF2;
       border-radius: 8px;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: #2D3A45;
       background: white;
     }
 
-    /* Date range - extra compact */
+    /* Date range - more compact */
     .date-range {
       display: flex;
       gap: 4px;
@@ -145,40 +146,33 @@
 
     .date-range input[type="date"] {
       flex: 1;
-      padding: 6px 8px;
+      padding: 5px 8px;
       border: 1px solid #E9EDF2;
       border-radius: 8px;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: #2D3A45;
       background: white;
-      min-width: 100px;
+      min-width: 90px;
     }
 
-    .date-range input[type="date"]::-webkit-calendar-picker-indicator {
-      filter: invert(0.5);
-      cursor: pointer;
-      padding: 2px;
-    }
-
-    /* Button container - fixed width */
+    /* Button container */
     .button-container {
       display: flex;
-      gap: 6px;
-      min-width: 140px;
+      gap: 5px;
+      min-width: 120px;
     }
 
     .btn-apply {
       background: #A05AFF;
       color: white;
       border: none;
-      padding: 6px 12px;
+      padding: 5px 10px;
       border-radius: 20px;
       font-weight: 500;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       cursor: pointer;
       transition: background-color 0.2s ease;
       flex: 1;
-      white-space: nowrap;
     }
 
     .btn-apply:hover {
@@ -189,37 +183,36 @@
       background: white;
       color: #6B7A8D;
       border: 1px solid #E9EDF2;
-      padding: 6px 12px;
+      padding: 5px 10px;
       border-radius: 20px;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       cursor: pointer;
       transition: all 0.2s ease;
       flex: 1;
-      white-space: nowrap;
     }
 
     .btn-reset:hover {
       background: #F5F7FA;
     }
 
-    /* KPI Cards */
+    /* KPI Cards - more compact */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 15px;
     }
 
     .kpi-card {
       background: white;
-      border-radius: 20px;
-      padding: 20px;
+      border-radius: 16px;
+      padding: 15px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       border-top: 4px solid #A05AFF;
     }
 
     .kpi-value {
-      font-size: 2rem;
+      font-size: 1.6rem;
       font-weight: 600;
       color: #2D3A45;
       line-height: 1.2;
@@ -227,44 +220,44 @@
 
     .kpi-label {
       color: #6B7A8D;
-      font-size: 0.9rem;
-      margin-top: 5px;
+      font-size: 0.8rem;
+      margin-top: 3px;
     }
 
     .kpi-trend {
-      font-size: 0.8rem;
-      margin-top: 8px;
+      font-size: 0.7rem;
+      margin-top: 5px;
     }
 
     .trend-up { color: #1BCFB4; }
     .trend-down { color: #FE9496; }
 
-    /* Charts Grid - 3 columns */
+    /* Charts Grid - 3 columns, more compact */
     .charts-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 15px;
     }
 
     .chart-card {
       background: white;
-      border-radius: 24px;
-      padding: 20px;
+      border-radius: 20px;
+      padding: 15px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
     .chart-title {
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: 600;
       color: #2D3A45;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
       border-bottom: 1px solid #E9EDF2;
     }
 
     .chart-container {
-      height: 250px;
+      height: 200px; /* Reduced height */
       width: 100%;
       position: relative;
     }
@@ -275,57 +268,57 @@
       height: 100% !important;
     }
 
-    /* KAM Performance Section - NOW FIRST */
+    /* KAM Performance Section */
     .kam-performance-section {
       background: white;
-      border-radius: 24px;
-      padding: 20px;
-      margin-bottom: 20px;
+      border-radius: 20px;
+      padding: 15px;
+      margin-bottom: 15px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
     .kam-legend {
       display: flex;
-      gap: 20px;
-      margin-bottom: 15px;
-      padding-bottom: 10px;
+      gap: 15px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
       border-bottom: 1px solid #E9EDF2;
     }
 
     .kam-legend-item {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.85rem;
+      gap: 6px;
+      font-size: 0.8rem;
       color: #2D3A45;
     }
 
     .kam-legend-color {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       border-radius: 4px;
     }
 
     .kam-bar-container {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      max-height: 400px;
+      gap: 8px;
+      max-height: 350px;
       overflow-y: auto;
-      padding-right: 10px;
+      padding-right: 5px;
     }
 
     .kam-bar-row {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .kam-bar-label {
-      width: 180px;
+      width: 150px; /* Slightly smaller */
       font-weight: 500;
       color: #2D3A45;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -334,9 +327,9 @@
     .kam-bar-wrapper {
       flex: 1;
       display: flex;
-      height: 24px;
+      height: 20px; /* Smaller bars */
       background: #E9EDF2;
-      border-radius: 12px;
+      border-radius: 10px;
       overflow: hidden;
     }
 
@@ -350,23 +343,23 @@
     .kam-bar-other { background-color: #FE9496; }
 
     .kam-bar-counts {
-      width: 100px;
-      font-size: 0.85rem;
+      width: 90px;
+      font-size: 0.75rem;
       color: #6B7A8D;
       text-align: right;
     }
 
-    /* Lead Sources Section - NOW SECOND */
+    /* Lead Sources Section */
     .lead-sources {
       background: white;
-      border-radius: 24px;
-      padding: 20px;
-      margin-bottom: 20px;
+      border-radius: 20px;
+      padding: 15px;
+      margin-bottom: 15px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
     #leadSourcesContainer {
-      max-height: 300px;
+      max-height: 250px; /* Reduced height */
       overflow-y: auto;
       padding-right: 5px;
     }
@@ -374,14 +367,14 @@
     #leadSourcesContainer .source-item {
       display: flex;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
     .source-label {
-      width: 140px;
+      width: 130px;
       font-weight: 500;
       color: #2D3A45;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -389,10 +382,10 @@
 
     .source-bar-container {
       flex: 1;
-      height: 12px;
+      height: 10px; /* Smaller bars */
       background: #E9EDF2;
       border-radius: 20px;
-      margin: 0 15px;
+      margin: 0 10px;
       overflow: hidden;
     }
 
@@ -403,21 +396,21 @@
     }
 
     .source-percentage {
-      width: 60px;
+      width: 50px;
       font-weight: 600;
       color: #2D3A45;
       text-align: right;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
     }
 
     /* Aging Stats */
     .aging-stats {
       display: flex;
       justify-content: space-between;
-      margin-top: 15px;
-      padding: 15px;
+      margin-top: 10px;
+      padding: 12px;
       background: #F5F7FA;
-      border-radius: 16px;
+      border-radius: 12px;
     }
 
     .aging-item {
@@ -426,36 +419,37 @@
     }
 
     .aging-label {
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       color: #6B7A8D;
-      margin-bottom: 5px;
+      margin-bottom: 3px;
     }
 
     .aging-value {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       font-weight: 600;
       color: #2D3A45;
     }
 
-    /* Table */
+    /* Table - more compact */
     .table-container {
       background: white;
-      border-radius: 24px;
-      padding: 20px;
+      border-radius: 20px;
+      padding: 15px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
     .table {
       width: 100%;
       border-collapse: collapse;
+      font-size: 0.8rem;
     }
 
     .table th {
       text-align: left;
-      padding: 15px 10px;
+      padding: 10px 8px;
       background: #F5F7FA;
       color: #2D3A45;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       font-weight: 600;
       position: sticky;
       top: 0;
@@ -463,17 +457,17 @@
     }
 
     .table td {
-      padding: 12px 10px;
+      padding: 8px;
       border-bottom: 1px solid #E9EDF2;
       color: #2D3A45;
     }
 
     /* Priority badges */
     .priority-badge {
-      padding: 3px 10px;
+      padding: 2px 8px;
       border-radius: 20px;
       color: white;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       display: inline-block;
     }
 
@@ -496,16 +490,16 @@
     <div class="dashboard-header d-flex justify-content-between align-items-center">
       <div>
         <h3>📈 Demand Generation Dashboard <span class="secure-badge">🔒 Live Data</span></h3>
-        <p style="color: #6B7A8D; margin: 5px 0 0;">Leads Progression Tracker</p>
+        <p style="color: #6B7A8D; margin: 3px 0 0; font-size: 0.8rem;">Leads Progression Tracker</p>
       </div>
-      <div style="display: flex; gap: 20px;">
+      <div style="display: flex; gap: 15px;">
         <div style="text-align: right;">
-          <div class="kpi-value" style="font-size: 1.5rem;" id="totalLeadsHeader">0</div>
-          <div style="color: #6B7A8D; font-size: 0.8rem;">Total Leads</div>
+          <div class="kpi-value" style="font-size: 1.2rem;" id="totalLeadsHeader">0</div>
+          <div style="color: #6B7A8D; font-size: 0.7rem;">Total Leads</div>
         </div>
         <div style="text-align: right;">
-          <div class="kpi-value" style="font-size: 1.5rem;" id="closedLeadsHeader">0</div>
-          <div style="color: #6B7A8D; font-size: 0.8rem;">Closed Deals</div>
+          <div class="kpi-value" style="font-size: 1.2rem;" id="closedLeadsHeader">0</div>
+          <div style="color: #6B7A8D; font-size: 0.7rem;">Closed Deals</div>
         </div>
       </div>
     </div>
@@ -598,9 +592,9 @@
       </div>
     </div>
 
-    <!-- KAM Performance Section - NOW FIRST (after charts) -->
+    <!-- KAM Performance Section - ALL KAMs shown -->
     <div class="kam-performance-section">
-      <div class="chart-title" style="margin-bottom: 15px;">👥 KAM Performance</div>
+      <div class="chart-title" style="margin-bottom: 10px;">👥 KAM Performance</div>
       
       <!-- Legend -->
       <div class="kam-legend">
@@ -618,17 +612,17 @@
         </div>
       </div>
 
-      <!-- KAM Bars Container -->
+      <!-- KAM Bars Container - ALL KAMs will be shown here -->
       <div id="kamBarsContainer" class="kam-bar-container">
-        <div class="text-center" style="padding: 20px; color: #6B7A8D;">Loading KAM data...</div>
+        <div class="text-center" style="padding: 15px; color: #6B7A8D;">Loading KAM data...</div>
       </div>
     </div>
 
-    <!-- Lead Sources Section - NOW SECOND -->
+    <!-- Lead Sources Section -->
     <div class="lead-sources">
-      <div class="chart-title" style="margin-bottom: 20px;">📊 Lead Sources</div>
+      <div class="chart-title" style="margin-bottom: 12px;">📊 Lead Sources</div>
       <div id="leadSourcesContainer">
-        <div class="text-center" style="padding: 20px; color: #6B7A8D;">Loading sources...</div>
+        <div class="text-center" style="padding: 15px; color: #6B7A8D;">Loading sources...</div>
       </div>
     </div>
 
@@ -650,11 +644,11 @@
 
     <!-- KAM Notes Table -->
     <div class="table-container">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <span class="chart-title" style="margin: 0;">📋 KAM Notes & Lead Details</span>
-        <span class="badge" style="background: #A05AFF; color: white; padding: 5px 15px; border-radius: 40px;" id="recordCount">0 records</span>
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="chart-title" style="margin: 0; font-size: 0.9rem;">📋 KAM Notes & Lead Details</span>
+        <span class="badge" style="background: #A05AFF; color: white; padding: 4px 12px; border-radius: 40px; font-size: 0.7rem;" id="recordCount">0 records</span>
       </div>
-      <div style="max-height: 400px; overflow-y: auto; border-radius: 12px;">
+      <div style="max-height: 350px; overflow-y: auto; border-radius: 10px;">
         <table class="table" id="dataTable">
           <thead>
             <tr>
@@ -663,7 +657,7 @@
               <th>KAM</th>
               <th>Priority</th>
               <th>Stage</th>
-              <th>Aging (Days)</th>
+              <th>Aging</th>
               <th>Notes</th>
               <th>Country</th>
             </tr>
@@ -746,7 +740,7 @@
         const notesIdx = headers.findIndex(h => h && (h.toLowerCase().includes('kam notes') || h.toLowerCase().includes('notes')));
         const countryIdx = headers.findIndex(h => h && h.toLowerCase().includes('country'));
         
-        // FIXED: Use Key Account Manager column, NOT AgentName
+        // Use Key Account Manager column
         const kamIdx = headers.findIndex(h => {
           if (!h) return false;
           const header = h.toString().toLowerCase().replace(/\s+/g, ' ').trim();
@@ -775,7 +769,7 @@
             aging: parseInt(values[values.length - 1]) || 0,
             notes: values[notesIdx] || '',
             country: values[countryIdx] || '',
-            kam: values[kamIdx] || '', // Now using correct Key Account Manager column
+            kam: values[kamIdx] || '',
             source: values[sourceIdx] || ''
           };
           
@@ -819,7 +813,7 @@
     }
 
     function populateFilters() {
-      // Populate KAM dropdown using correct kam field
+      // Populate KAM dropdown
       const kams = [...new Set(allData.map(row => row.kam).filter(Boolean))].sort();
       const kamSelect = document.getElementById('kamFilter');
       kams.forEach(kam => {
@@ -853,13 +847,13 @@
     function updateDashboard() {
       const total = filteredData.length;
       
-      // Calculate stage counts with better closed detection
+      // Calculate stage counts
       const prospecting = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('prospecting')).length;
       const demo = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('demo')).length;
       const proposal = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('proposal')).length;
       const negotiation = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('negotiation')).length;
       
-      // Better closed detection - look for any stage containing "closed" or "won"
+      // Better closed detection
       const closed = filteredData.filter(row => 
         row.stage && (
           row.stage.toLowerCase().includes('closed') || 
@@ -867,7 +861,6 @@
         )
       ).length;
       
-      const advanced = demo + proposal + negotiation;
       const conversionRate = total > 0 ? (closed / total * 100).toFixed(1) : 0;
 
       // Update header KPIs
@@ -892,9 +885,6 @@
       // ===========================================
       // LEAD SOURCES
       // ===========================================
-      console.log('=== LEAD SOURCES DEBUG ===');
-      
-      // Count all sources
       const sourceCounts = {};
       filteredData.forEach(row => {
         if (row.source && row.source.trim() !== '') {
@@ -903,21 +893,15 @@
         }
       });
 
-      // Sort sources by count (highest first)
       const sortedSources = Object.entries(sourceCounts)
         .sort((a, b) => b[1] - a[1])
-        .slice(0, 8); // Show top 8 sources
+        .slice(0, 8);
 
-      console.log('Top sources:', sortedSources);
-
-      // Get the container
       const container = document.getElementById('leadSourcesContainer');
-      container.innerHTML = ''; // Clear loading text
+      container.innerHTML = '';
 
-      // Define colors for bars
       const barColors = ['#A05AFF', '#4BCBEB', '#FE9496', '#1BCFB4', '#9E58FF', '#FFB347', '#6B5B95', '#88B04B'];
 
-      // Create a bar for each source
       sortedSources.forEach(([source, count], index) => {
         const percentage = filteredData.length > 0 ? ((count / filteredData.length) * 100).toFixed(1) : 0;
         const colorIndex = index % barColors.length;
@@ -935,15 +919,12 @@
         container.appendChild(sourceItem);
       });
 
-      // If no sources found
       if (sortedSources.length === 0) {
-        container.innerHTML = '<div class="text-center" style="padding: 20px; color: #6B7A8D;">No source data available</div>';
+        container.innerHTML = '<div class="text-center" style="padding: 15px; color: #6B7A8D;">No source data available</div>';
       }
 
-      console.log('Source percentages calculated');
-
       // ===========================================
-      // KAM PERFORMANCE DATA (using correct kam field)
+      // KAM PERFORMANCE - ALL KAMs (no grouping)
       // ===========================================
       const kamPerformance = {};
       filteredData.forEach(row => {
@@ -953,15 +934,12 @@
           }
           kamPerformance[row.kam].total++;
           
-          // Check for closed deals
           if (row.stage && (row.stage.toLowerCase().includes('closed') || row.stage.toLowerCase().includes('won'))) {
             kamPerformance[row.kam].closed++;
           } 
-          // Check for prospecting
           else if (row.stage && row.stage.toLowerCase().includes('prospecting')) {
             kamPerformance[row.kam].prospecting++;
           } 
-          // Everything else
           else {
             kamPerformance[row.kam].other++;
           }
@@ -977,22 +955,12 @@
         other: data.other
       })).sort((a, b) => b.total - a.total);
 
-      // Take top 7 KAMs and group the rest as "Others"
-      const topKAMs = kamArray.slice(0, 7);
-      const otherKAMs = kamArray.slice(7);
-
-      // Calculate totals for "Others"
-      const othersTotal = otherKAMs.reduce((sum, k) => sum + k.total, 0);
-      const othersClosed = otherKAMs.reduce((sum, k) => sum + k.closed, 0);
-      const othersProspecting = otherKAMs.reduce((sum, k) => sum + k.prospecting, 0);
-      const othersOther = otherKAMs.reduce((sum, k) => sum + k.other, 0);
-
-      // Create custom KAM bars
+      // Create custom KAM bars - ALL KAMs, no "Others" grouping
       const kamContainer = document.getElementById('kamBarsContainer');
       kamContainer.innerHTML = '';
 
-      // Add top KAMs
-      topKAMs.forEach(kam => {
+      // Add ALL KAMs
+      kamArray.forEach(kam => {
         const closedPct = (kam.closed / kam.total * 100) || 0;
         const prospectingPct = (kam.prospecting / kam.total * 100) || 0;
         const otherPct = (kam.other / kam.total * 100) || 0;
@@ -1011,24 +979,9 @@
         kamContainer.appendChild(row);
       });
 
-      // Add Others row if there are any
-      if (otherKAMs.length > 0) {
-        const othersClosedPct = (othersClosed / othersTotal * 100) || 0;
-        const othersProspectingPct = (othersProspecting / othersTotal * 100) || 0;
-        const othersOtherPct = (othersOther / othersTotal * 100) || 0;
-        
-        const othersRow = document.createElement('div');
-        othersRow.className = 'kam-bar-row';
-        othersRow.innerHTML = `
-          <span class="kam-bar-label">Others</span>
-          <div class="kam-bar-wrapper">
-            <div class="kam-bar-segment kam-bar-closed" style="width: ${othersClosedPct}%;"></div>
-            <div class="kam-bar-segment kam-bar-prospecting" style="width: ${othersProspectingPct}%;"></div>
-            <div class="kam-bar-segment kam-bar-other" style="width: ${othersOtherPct}%;"></div>
-          </div>
-          <span class="kam-bar-counts">${othersClosed}, ${othersProspecting}, ${othersOther}</span>
-        `;
-        kamContainer.appendChild(othersRow);
+      // If no KAMs found
+      if (kamArray.length === 0) {
+        kamContainer.innerHTML = '<div class="text-center" style="padding: 15px; color: #6B7A8D;">No KAM data available</div>';
       }
 
       // Calculate stages by aging
@@ -1077,18 +1030,18 @@
           datasets: [{
             data: stageData,
             backgroundColor: ['#A05AFF', '#4BCBEB', '#FE9496', '#1BCFB4'],
-            borderRadius: 8
+            borderRadius: 6
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          layout: { padding: { top: 20 } },
+          layout: { padding: { top: 15 } },
           plugins: { 
             legend: { display: false },
             datalabels: {
               color: '#2D3A45',
-              font: { weight: 'bold', size: 12 },
+              font: { weight: 'bold', size: 10 },
               anchor: 'end',
               align: 'top',
               formatter: (value) => value > 0 ? value : ''
@@ -1097,10 +1050,10 @@
           scales: {
             y: { 
               beginAtZero: true,
-              ticks: { stepSize: 1, color: '#2D3A45' },
+              ticks: { stepSize: 1, color: '#2D3A45', font: { size: 9 } },
               grid: { color: '#E9EDF2' }
             },
-            x: { ticks: { color: '#2D3A45' }, grid: { display: false } }
+            x: { ticks: { color: '#2D3A45', font: { size: 9 } }, grid: { display: false } }
           }
         }
       });
@@ -1126,11 +1079,11 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: { 
-            legend: { position: 'bottom', labels: { color: '#2D3A45' } },
+            legend: { position: 'bottom', labels: { color: '#2D3A45', font: { size: 9 } } },
             datalabels: {
               display: agingTotal > 0,
               color: 'white',
-              font: { weight: 'bold', size: 11 },
+              font: { weight: 'bold', size: 9 },
               formatter: (value) => {
                 const percentage = agingTotal > 0 ? ((value / agingTotal) * 100).toFixed(1) : 0;
                 return percentage + '%';
@@ -1140,7 +1093,7 @@
         }
       });
 
-      // Chart 3: Stages by Aging (Stacked Bar)
+      // Chart 3: Stages by Aging
       if (charts.stagesByAgingChart) charts.stagesByAgingChart.destroy();
       
       const ctx3 = document.getElementById('stagesByAgingChart').getContext('2d');
@@ -1183,16 +1136,16 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: { 
-            legend: { position: 'bottom', labels: { color: '#2D3A45' } },
+            legend: { position: 'bottom', labels: { color: '#2D3A45', font: { size: 8 } } },
             datalabels: { display: false }
           },
           scales: {
             y: { 
               beginAtZero: true,
-              ticks: { stepSize: 1, color: '#2D3A45' },
+              ticks: { stepSize: 1, color: '#2D3A45', font: { size: 8 } },
               grid: { color: '#E9EDF2' }
             },
-            x: { ticks: { color: '#2D3A45' }, grid: { display: false } }
+            x: { ticks: { color: '#2D3A45', font: { size: 8 } }, grid: { display: false } }
           }
         }
       });

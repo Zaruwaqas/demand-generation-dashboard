@@ -264,7 +264,7 @@
     }
 
     .chart-container {
-      height: 250px;
+      height: 350px; /* Increased height for horizontal bars */
       width: 100%;
       position: relative;
     }
@@ -740,12 +740,19 @@
     function updateDashboard() {
       const total = filteredData.length;
       
-      // Calculate stage counts
+      // Calculate stage counts with better closed detection
       const prospecting = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('prospecting')).length;
       const demo = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('demo')).length;
       const proposal = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('proposal')).length;
       const negotiation = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('negotiation')).length;
-      const closed = filteredData.filter(row => row.stage && (row.stage.toLowerCase().includes('closed won') || row.stage.toLowerCase().includes('closed'))).length;
+      
+      // Better closed detection - look for any stage containing "closed" or "won"
+      const closed = filteredData.filter(row => 
+        row.stage && (
+          row.stage.toLowerCase().includes('closed') || 
+          row.stage.toLowerCase().includes('won')
+        )
+      ).length;
       
       const advanced = demo + proposal + negotiation;
       const conversionRate = total > 0 ? (closed / total * 100).toFixed(1) : 0;
@@ -770,7 +777,7 @@
       document.getElementById('aging60plus').innerText = aging60plus;
 
       // ===========================================
-      // DYNAMIC LEAD SOURCES - Shows your actual data
+      // DYNAMIC LEAD SOURCES
       // ===========================================
       console.log('=== LEAD SOURCES DEBUG ===');
       
@@ -822,19 +829,28 @@
 
       console.log('Source percentages calculated');
 
-      // Calculate KAM performance data
+      // ===========================================
+      // KAM PERFORMANCE DATA (for the chart)
+      // ===========================================
       const kamPerformance = {};
       filteredData.forEach(row => {
         if (row.kam && row.kam.trim() !== '') {
           if (!kamPerformance[row.kam]) {
-            kamPerformance[row.kam] = { total: 0, closed: 0, prospecting: 0 };
+            kamPerformance[row.kam] = { total: 0, closed: 0, prospecting: 0, other: 0 };
           }
           kamPerformance[row.kam].total++;
           
-          if (row.stage && row.stage.toLowerCase().includes('closed')) {
+          // Check for closed deals
+          if (row.stage && (row.stage.toLowerCase().includes('closed') || row.stage.toLowerCase().includes('won'))) {
             kamPerformance[row.kam].closed++;
-          } else if (row.stage && row.stage.toLowerCase().includes('prospecting')) {
+          } 
+          // Check for prospecting
+          else if (row.stage && row.stage.toLowerCase().includes('prospecting')) {
             kamPerformance[row.kam].prospecting++;
+          } 
+          // Everything else
+          else {
+            kamPerformance[row.kam].other++;
           }
         }
       });
@@ -948,14 +964,34 @@
         }
       });
 
-      // Chart 3: KAM Performance (Stacked Bar)
+      // Chart 3: KAM Performance - HORIZONTAL STACKED BAR (Top 7 + Others)
       if (charts.kamPerformanceChart) charts.kamPerformanceChart.destroy();
-      
-      const kamNames = Object.keys(kamPerformance);
-      const closedData = kamNames.map(kam => kamPerformance[kam].closed);
-      const prospectingData = kamNames.map(kam => kamPerformance[kam].prospecting);
-      const otherData = kamNames.map(kam => kamPerformance[kam].total - (kamPerformance[kam].closed + kamPerformance[kam].prospecting));
-      
+
+      // Convert to array and sort by total (highest first)
+      const kamArray = Object.entries(kamPerformance).map(([name, data]) => ({
+        name,
+        total: data.total,
+        closed: data.closed,
+        prospecting: data.prospecting,
+        other: data.other
+      })).sort((a, b) => b.total - a.total);
+
+      // Take top 7 KAMs and group the rest as "Others"
+      const topKAMs = kamArray.slice(0, 7);
+      const otherKAMs = kamArray.slice(7);
+
+      // Calculate totals for "Others"
+      const othersTotal = otherKAMs.reduce((sum, k) => sum + k.total, 0);
+      const othersClosed = otherKAMs.reduce((sum, k) => sum + k.closed, 0);
+      const othersProspecting = otherKAMs.reduce((sum, k) => sum + k.prospecting, 0);
+      const othersOther = otherKAMs.reduce((sum, k) => sum + k.other, 0);
+
+      // Prepare final data arrays
+      const kamNames = [...topKAMs.map(k => k.name), 'Others'];
+      const closedData = [...topKAMs.map(k => k.closed), othersClosed];
+      const prospectingData = [...topKAMs.map(k => k.prospecting), othersProspecting];
+      const otherData = [...topKAMs.map(k => k.other), othersOther];
+
       const ctx3 = document.getElementById('kamPerformanceChart').getContext('2d');
       charts.kamPerformanceChart = new Chart(ctx3, {
         type: 'bar',
@@ -965,27 +1001,28 @@
             {
               label: 'Closed',
               data: closedData,
-              backgroundColor: '#1BCFB4',
+              backgroundColor: '#1BCFB4', // Teal for closed
               stack: 'Stack 0',
               borderRadius: 4
             },
             {
               label: 'Prospecting',
               data: prospectingData,
-              backgroundColor: '#A05AFF',
+              backgroundColor: '#A05AFF', // Purple for prospecting
               stack: 'Stack 0',
               borderRadius: 4
             },
             {
               label: 'Other Stages',
               data: otherData,
-              backgroundColor: '#FE9496',
+              backgroundColor: '#FE9496', // Coral for other
               stack: 'Stack 0',
               borderRadius: 4
             }
           ]
         },
         options: {
+          indexAxis: 'y', // This makes it HORIZONTAL!
           responsive: true,
           maintainAspectRatio: false,
           plugins: { 
@@ -996,20 +1033,21 @@
             datalabels: {
               color: 'white',
               font: { weight: 'bold', size: 10 },
-              formatter: (value) => value > 0 ? value : ''
+              formatter: (value) => value > 0 ? value : '',
+              align: 'center',
+              anchor: 'center'
             }
           },
           scales: {
-            y: { 
+            x: { 
               beginAtZero: true,
               ticks: { stepSize: 1, color: '#2D3A45' },
               grid: { color: '#E9EDF2' }
             },
-            x: { 
+            y: { 
               ticks: { 
                 color: '#2D3A45',
-                maxRotation: 45,
-                minRotation: 45
+                font: { size: 11 }
               }, 
               grid: { display: false } 
             }

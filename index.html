@@ -275,61 +275,7 @@
       height: 100% !important;
     }
 
-    /* Lead Sources Section */
-    .lead-sources {
-      background: white;
-      border-radius: 24px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-
-    #leadSourcesContainer {
-      max-height: 300px;
-      overflow-y: auto;
-      padding-right: 5px;
-    }
-
-    #leadSourcesContainer .source-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .source-label {
-      width: 140px;
-      font-weight: 500;
-      color: #2D3A45;
-      font-size: 0.9rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .source-bar-container {
-      flex: 1;
-      height: 12px;
-      background: #E9EDF2;
-      border-radius: 20px;
-      margin: 0 15px;
-      overflow: hidden;
-    }
-
-    .source-bar {
-      height: 100%;
-      border-radius: 20px;
-      transition: width 0.3s ease;
-    }
-
-    .source-percentage {
-      width: 60px;
-      font-weight: 600;
-      color: #2D3A45;
-      text-align: right;
-      font-size: 0.9rem;
-    }
-
-    /* KAM Performance Section - NEW below Lead Sources */
+    /* KAM Performance Section - NOW FIRST */
     .kam-performance-section {
       background: white;
       border-radius: 24px;
@@ -408,6 +354,60 @@
       font-size: 0.85rem;
       color: #6B7A8D;
       text-align: right;
+    }
+
+    /* Lead Sources Section - NOW SECOND */
+    .lead-sources {
+      background: white;
+      border-radius: 24px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    #leadSourcesContainer {
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+
+    #leadSourcesContainer .source-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .source-label {
+      width: 140px;
+      font-weight: 500;
+      color: #2D3A45;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .source-bar-container {
+      flex: 1;
+      height: 12px;
+      background: #E9EDF2;
+      border-radius: 20px;
+      margin: 0 15px;
+      overflow: hidden;
+    }
+
+    .source-bar {
+      height: 100%;
+      border-radius: 20px;
+      transition: width 0.3s ease;
+    }
+
+    .source-percentage {
+      width: 60px;
+      font-weight: 600;
+      color: #2D3A45;
+      text-align: right;
+      font-size: 0.9rem;
     }
 
     /* Aging Stats */
@@ -598,15 +598,7 @@
       </div>
     </div>
 
-    <!-- Lead Sources Section -->
-    <div class="lead-sources">
-      <div class="chart-title" style="margin-bottom: 20px;">📊 Lead Sources</div>
-      <div id="leadSourcesContainer">
-        <div class="text-center" style="padding: 20px; color: #6B7A8D;">Loading sources...</div>
-      </div>
-    </div>
-
-    <!-- KAM Performance Section - BELOW Lead Sources -->
+    <!-- KAM Performance Section - NOW FIRST (after charts) -->
     <div class="kam-performance-section">
       <div class="chart-title" style="margin-bottom: 15px;">👥 KAM Performance</div>
       
@@ -629,6 +621,14 @@
       <!-- KAM Bars Container -->
       <div id="kamBarsContainer" class="kam-bar-container">
         <div class="text-center" style="padding: 20px; color: #6B7A8D;">Loading KAM data...</div>
+      </div>
+    </div>
+
+    <!-- Lead Sources Section - NOW SECOND -->
+    <div class="lead-sources">
+      <div class="chart-title" style="margin-bottom: 20px;">📊 Lead Sources</div>
+      <div id="leadSourcesContainer">
+        <div class="text-center" style="padding: 20px; color: #6B7A8D;">Loading sources...</div>
       </div>
     </div>
 
@@ -745,9 +745,15 @@
         const stageIdx = headers.findIndex(h => h && h.toLowerCase().includes('deal stage'));
         const notesIdx = headers.findIndex(h => h && (h.toLowerCase().includes('kam notes') || h.toLowerCase().includes('notes')));
         const countryIdx = headers.findIndex(h => h && h.toLowerCase().includes('country'));
-        const kamIdx = headers.findIndex(h => h && (h.toLowerCase().includes('key account manager') || h.toLowerCase().includes('kam')));
         
-        // Find source column - look for lead sources
+        // FIXED: Use Key Account Manager column, NOT AgentName
+        const kamIdx = headers.findIndex(h => {
+          if (!h) return false;
+          const header = h.toString().toLowerCase().replace(/\s+/g, ' ').trim();
+          return header.includes('key account manager') || header === 'kam';
+        });
+        
+        // Find source column
         const sourceIdx = headers.findIndex(h => {
           if (!h) return false;
           const header = h.toString().toLowerCase().replace(/\s+/g, ' ').trim();
@@ -769,7 +775,7 @@
             aging: parseInt(values[values.length - 1]) || 0,
             notes: values[notesIdx] || '',
             country: values[countryIdx] || '',
-            kam: values[kamIdx] || '',
+            kam: values[kamIdx] || '', // Now using correct Key Account Manager column
             source: values[sourceIdx] || ''
           };
           
@@ -777,7 +783,7 @@
         }
 
         console.log(`Loaded ${allData.length} records`);
-        console.log('Sample source values:', allData.slice(0, 5).map(r => r.source));
+        console.log('Sample KAM values:', allData.slice(0, 5).map(r => r.kam));
 
         filteredData = [...allData];
         populateFilters();
@@ -813,7 +819,7 @@
     }
 
     function populateFilters() {
-      // Populate KAM dropdown
+      // Populate KAM dropdown using correct kam field
       const kams = [...new Set(allData.map(row => row.kam).filter(Boolean))].sort();
       const kamSelect = document.getElementById('kamFilter');
       kams.forEach(kam => {
@@ -884,7 +890,7 @@
       document.getElementById('aging60plus').innerText = aging60plus;
 
       // ===========================================
-      // DYNAMIC LEAD SOURCES
+      // LEAD SOURCES
       // ===========================================
       console.log('=== LEAD SOURCES DEBUG ===');
       
@@ -937,7 +943,7 @@
       console.log('Source percentages calculated');
 
       // ===========================================
-      // KAM PERFORMANCE DATA (Custom bars)
+      // KAM PERFORMANCE DATA (using correct kam field)
       // ===========================================
       const kamPerformance = {};
       filteredData.forEach(row => {

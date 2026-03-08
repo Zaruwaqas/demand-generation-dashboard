@@ -20,15 +20,15 @@
     body { 
       background: #F5F7FA;
       font-family: 'Inter', sans-serif;
-      padding: 15px; /* Reduced padding */
+      padding: 15px;
     }
 
     .dashboard-container {
-      max-width: 1600px; /* Reduced max-width */
+      max-width: 1600px;
       margin: 0 auto;
     }
 
-    /* Header - more compact */
+    /* Header */
     .dashboard-header {
       background: white;
       border-radius: 20px;
@@ -90,18 +90,7 @@
       font-weight: 500;
     }
 
-    /* Error Message */
-    .error-message {
-      background: #FFEBEE;
-      color: #D32F2F;
-      padding: 15px;
-      border-radius: 12px;
-      margin: 15px 0;
-      text-align: center;
-      border: 1px solid #FFCDD2;
-    }
-
-    /* Filter Panel - more compact */
+    /* Filter Panel */
     .filter-panel {
       background: white;
       border-radius: 16px;
@@ -137,7 +126,6 @@
       background: white;
     }
 
-    /* Date range - more compact */
     .date-range {
       display: flex;
       gap: 4px;
@@ -155,7 +143,6 @@
       min-width: 90px;
     }
 
-    /* Button container */
     .button-container {
       display: flex;
       gap: 5px;
@@ -171,7 +158,6 @@
       font-weight: 500;
       font-size: 0.75rem;
       cursor: pointer;
-      transition: background-color 0.2s ease;
       flex: 1;
     }
 
@@ -187,7 +173,6 @@
       border-radius: 20px;
       font-size: 0.75rem;
       cursor: pointer;
-      transition: all 0.2s ease;
       flex: 1;
     }
 
@@ -195,7 +180,7 @@
       background: #F5F7FA;
     }
 
-    /* KPI Cards - more compact */
+    /* KPI Cards */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -215,7 +200,6 @@
       font-size: 1.6rem;
       font-weight: 600;
       color: #2D3A45;
-      line-height: 1.2;
     }
 
     .kpi-label {
@@ -232,7 +216,7 @@
     .trend-up { color: #1BCFB4; }
     .trend-down { color: #FE9496; }
 
-    /* Charts Grid - 3 columns, more compact */
+    /* Charts Grid - 3 columns */
     .charts-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -257,7 +241,7 @@
     }
 
     .chart-container {
-      height: 200px; /* Reduced height */
+      height: 200px;
       width: 100%;
       position: relative;
     }
@@ -315,7 +299,7 @@
     }
 
     .kam-bar-label {
-      width: 150px; /* Slightly smaller */
+      width: 150px;
       font-weight: 500;
       color: #2D3A45;
       font-size: 0.8rem;
@@ -327,7 +311,7 @@
     .kam-bar-wrapper {
       flex: 1;
       display: flex;
-      height: 20px; /* Smaller bars */
+      height: 20px;
       background: #E9EDF2;
       border-radius: 10px;
       overflow: hidden;
@@ -359,7 +343,7 @@
     }
 
     #leadSourcesContainer {
-      max-height: 250px; /* Reduced height */
+      max-height: 250px;
       overflow-y: auto;
       padding-right: 5px;
     }
@@ -382,7 +366,7 @@
 
     .source-bar-container {
       flex: 1;
-      height: 10px; /* Smaller bars */
+      height: 10px;
       background: #E9EDF2;
       border-radius: 20px;
       margin: 0 10px;
@@ -430,7 +414,7 @@
       color: #2D3A45;
     }
 
-    /* Table - more compact */
+    /* Table */
     .table-container {
       background: white;
       border-radius: 20px;
@@ -451,9 +435,6 @@
       color: #2D3A45;
       font-size: 0.7rem;
       font-weight: 600;
-      position: sticky;
-      top: 0;
-      z-index: 10;
     }
 
     .table td {
@@ -570,7 +551,7 @@
       </div>
     </div>
 
-    <!-- Charts Grid - 3 columns -->
+    <!-- Charts Grid - 3 columns with NEW Stages by Aging chart -->
     <div class="charts-grid">
       <div class="chart-card">
         <div class="chart-title">🎯 Deals by Stage</div>
@@ -592,11 +573,10 @@
       </div>
     </div>
 
-    <!-- KAM Performance Section - ALL KAMs shown -->
+    <!-- KAM Performance Section -->
     <div class="kam-performance-section">
       <div class="chart-title" style="margin-bottom: 10px;">👥 KAM Performance</div>
       
-      <!-- Legend -->
       <div class="kam-legend">
         <div class="kam-legend-item">
           <div class="kam-legend-color" style="background-color: #1BCFB4;"></div>
@@ -612,7 +592,6 @@
         </div>
       </div>
 
-      <!-- KAM Bars Container - ALL KAMs will be shown here -->
       <div id="kamBarsContainer" class="kam-bar-container">
         <div class="text-center" style="padding: 15px; color: #6B7A8D;">Loading KAM data...</div>
       </div>
@@ -648,7 +627,7 @@
         <span class="chart-title" style="margin: 0; font-size: 0.9rem;">📋 KAM Notes & Lead Details</span>
         <span class="badge" style="background: #A05AFF; color: white; padding: 4px 12px; border-radius: 40px; font-size: 0.7rem;" id="recordCount">0 records</span>
       </div>
-      <div style="max-height: 350px; overflow-y: auto; border-radius: 10px;">
+      <div style="max-height: 350px; overflow-y: auto;">
         <table class="table" id="dataTable">
           <thead>
             <tr>
@@ -683,7 +662,6 @@
     let filteredData = [];
     let charts = {};
 
-    // Hide loading spinner
     function hideLoader() {
       document.getElementById('loadingOverlay').style.opacity = '0';
       setTimeout(() => {
@@ -691,7 +669,6 @@
       }, 300);
     }
 
-    // Show error message
     function showError(message) {
       const container = document.querySelector('.dashboard-container');
       const errorDiv = document.createElement('div');
@@ -710,57 +687,38 @@
     // ===========================================
     async function loadData() {
       try {
-        console.log('Fetching data from:', APPS_SCRIPT_URL);
         const response = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now());
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const csvText = await response.text();
-        console.log('Data received, length:', csvText.length);
-        
-        if (csvText.startsWith('Error:')) {
-          throw new Error(csvText);
-        }
+        if (csvText.startsWith('Error:')) throw new Error(csvText);
 
         const lines = csvText.split('\n').filter(line => line.trim());
-        if (lines.length < 2) {
-          throw new Error('No data rows found');
-        }
+        if (lines.length < 2) throw new Error('No data rows found');
 
         const headers = parseCSVLine(lines[0]);
-        console.log('Headers found:', headers);
         
-        // Find column indices - flexible matching
         const dateIdx = headers.findIndex(h => h && h.toLowerCase().includes('lead sent date'));
         const companyIdx = headers.findIndex(h => h && h.toLowerCase().includes('companyname'));
         const priorityIdx = headers.findIndex(h => h && h.toLowerCase().includes('priority'));
         const stageIdx = headers.findIndex(h => h && h.toLowerCase().includes('deal stage'));
         const notesIdx = headers.findIndex(h => h && (h.toLowerCase().includes('kam notes') || h.toLowerCase().includes('notes')));
         const countryIdx = headers.findIndex(h => h && h.toLowerCase().includes('country'));
-        
-        // Use Key Account Manager column
         const kamIdx = headers.findIndex(h => {
           if (!h) return false;
           const header = h.toString().toLowerCase().replace(/\s+/g, ' ').trim();
           return header.includes('key account manager') || header === 'kam';
         });
-        
-        // Find source column
         const sourceIdx = headers.findIndex(h => {
           if (!h) return false;
           const header = h.toString().toLowerCase().replace(/\s+/g, ' ').trim();
           return header.includes('lead sources') || header.includes('lead source') || header.includes('source');
         });
-        
-        console.log('Column indices:', { dateIdx, companyIdx, priorityIdx, stageIdx, notesIdx, countryIdx, kamIdx, sourceIdx });
 
         allData = [];
         
         for (let i = 1; i < lines.length; i++) {
           const values = parseCSVLine(lines[i]);
-          
           const row = {
             date: values[dateIdx] || '',
             company: values[companyIdx] || '',
@@ -772,12 +730,8 @@
             kam: values[kamIdx] || '',
             source: values[sourceIdx] || ''
           };
-          
           allData.push(row);
         }
-
-        console.log(`Loaded ${allData.length} records`);
-        console.log('Sample KAM values:', allData.slice(0, 5).map(r => r.kam));
 
         filteredData = [...allData];
         populateFilters();
@@ -785,7 +739,7 @@
         hideLoader();
 
       } catch (error) {
-        console.error('Error loading data:', error);
+        console.error('Error:', error);
         showError(error.message);
       }
     }
@@ -797,15 +751,11 @@
       
       for (let i = 0; i < line.length; i++) {
         const char = line[i];
-        
-        if (char === '"') {
-          inQuote = !inQuote;
-        } else if (char === ',' && !inQuote) {
+        if (char === '"') inQuote = !inQuote;
+        else if (char === ',' && !inQuote) {
           values.push(currentValue);
           currentValue = '';
-        } else {
-          currentValue += char;
-        }
+        } else currentValue += char;
       }
       values.push(currentValue);
       
@@ -813,7 +763,6 @@
     }
 
     function populateFilters() {
-      // Populate KAM dropdown
       const kams = [...new Set(allData.map(row => row.kam).filter(Boolean))].sort();
       const kamSelect = document.getElementById('kamFilter');
       kams.forEach(kam => {
@@ -823,7 +772,6 @@
         kamSelect.appendChild(option);
       });
 
-      // Populate Region dropdown
       const regions = [...new Set(allData.map(row => row.country).filter(Boolean))].sort();
       const regionSelect = document.getElementById('regionFilter');
       regions.forEach(region => {
@@ -833,7 +781,6 @@
         regionSelect.appendChild(option);
       });
 
-      // Populate Deal Stage dropdown
       const stages = [...new Set(allData.map(row => row.stage).filter(Boolean))].sort();
       const stageSelect = document.getElementById('stageFilter');
       stages.forEach(stage => {
@@ -847,33 +794,24 @@
     function updateDashboard() {
       const total = filteredData.length;
       
-      // Calculate stage counts
-      const prospecting = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('prospecting')).length;
-      const demo = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('demo')).length;
-      const proposal = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('proposal')).length;
-      const negotiation = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('negotiation')).length;
+      const prospecting = filteredData.filter(row => row.stage?.toLowerCase().includes('prospecting')).length;
+      const demo = filteredData.filter(row => row.stage?.toLowerCase().includes('demo')).length;
+      const proposal = filteredData.filter(row => row.stage?.toLowerCase().includes('proposal')).length;
+      const negotiation = filteredData.filter(row => row.stage?.toLowerCase().includes('negotiation')).length;
       
-      // Better closed detection
       const closed = filteredData.filter(row => 
-        row.stage && (
-          row.stage.toLowerCase().includes('closed') || 
-          row.stage.toLowerCase().includes('won')
-        )
+        row.stage && (row.stage.toLowerCase().includes('closed') || row.stage.toLowerCase().includes('won'))
       ).length;
       
       const conversionRate = total > 0 ? (closed / total * 100).toFixed(1) : 0;
 
-      // Update header KPIs
       document.getElementById('totalLeadsHeader').innerText = total;
       document.getElementById('closedLeadsHeader').innerText = closed;
-
-      // Update KPI cards
       document.getElementById('kpiTotal').innerText = total;
       document.getElementById('kpiProspecting').innerText = prospecting;
       document.getElementById('kpiClosed').innerText = closed;
       document.getElementById('kpiConversion').innerText = conversionRate + '%';
 
-      // Update aging stats
       const aging0to30 = filteredData.filter(row => row.aging > 0 && row.aging <= 30).length;
       const aging31to60 = filteredData.filter(row => row.aging > 30 && row.aging <= 60).length;
       const aging60plus = filteredData.filter(row => row.aging > 60).length;
@@ -887,79 +825,59 @@
       // ===========================================
       const sourceCounts = {};
       filteredData.forEach(row => {
-        if (row.source && row.source.trim() !== '') {
-          const source = row.source.trim();
-          sourceCounts[source] = (sourceCounts[source] || 0) + 1;
+        if (row.source?.trim()) {
+          sourceCounts[row.source.trim()] = (sourceCounts[row.source.trim()] || 0) + 1;
         }
       });
 
-      const sortedSources = Object.entries(sourceCounts)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 8);
-
+      const sortedSources = Object.entries(sourceCounts).sort((a, b) => b[1] - a[1]).slice(0, 8);
       const container = document.getElementById('leadSourcesContainer');
       container.innerHTML = '';
-
+      
       const barColors = ['#A05AFF', '#4BCBEB', '#FE9496', '#1BCFB4', '#9E58FF', '#FFB347', '#6B5B95', '#88B04B'];
 
       sortedSources.forEach(([source, count], index) => {
-        const percentage = filteredData.length > 0 ? ((count / filteredData.length) * 100).toFixed(1) : 0;
-        const colorIndex = index % barColors.length;
-        
+        const percentage = ((count / filteredData.length) * 100).toFixed(1);
         const sourceItem = document.createElement('div');
         sourceItem.className = 'source-item';
         sourceItem.innerHTML = `
           <span class="source-label" title="${source}">${source}</span>
           <div class="source-bar-container">
-            <div class="source-bar" style="width: ${percentage}%; background-color: ${barColors[colorIndex]};"></div>
+            <div class="source-bar" style="width: ${percentage}%; background-color: ${barColors[index % barColors.length]};"></div>
           </div>
           <span class="source-percentage">${percentage}%</span>
         `;
-        
         container.appendChild(sourceItem);
       });
 
-      if (sortedSources.length === 0) {
-        container.innerHTML = '<div class="text-center" style="padding: 15px; color: #6B7A8D;">No source data available</div>';
-      }
-
       // ===========================================
-      // KAM PERFORMANCE - ALL KAMs (no grouping)
+      // KAM PERFORMANCE
       // ===========================================
       const kamPerformance = {};
       filteredData.forEach(row => {
-        if (row.kam && row.kam.trim() !== '') {
+        if (row.kam?.trim()) {
           if (!kamPerformance[row.kam]) {
             kamPerformance[row.kam] = { total: 0, closed: 0, prospecting: 0, other: 0 };
           }
           kamPerformance[row.kam].total++;
           
-          if (row.stage && (row.stage.toLowerCase().includes('closed') || row.stage.toLowerCase().includes('won'))) {
+          if (row.stage?.toLowerCase().includes('closed') || row.stage?.toLowerCase().includes('won')) {
             kamPerformance[row.kam].closed++;
-          } 
-          else if (row.stage && row.stage.toLowerCase().includes('prospecting')) {
+          } else if (row.stage?.toLowerCase().includes('prospecting')) {
             kamPerformance[row.kam].prospecting++;
-          } 
-          else {
+          } else {
             kamPerformance[row.kam].other++;
           }
         }
       });
 
-      // Convert to array and sort by total (highest first)
-      const kamArray = Object.entries(kamPerformance).map(([name, data]) => ({
-        name,
-        total: data.total,
-        closed: data.closed,
-        prospecting: data.prospecting,
-        other: data.other
-      })).sort((a, b) => b.total - a.total);
+      const kamArray = Object.entries(kamPerformance)
+        .map(([name, data]) => ({ name, ...data }))
+        .sort((a, b) => b.total - a.total);
 
-      // Create custom KAM bars - ALL KAMs, no "Others" grouping
       const kamContainer = document.getElementById('kamBarsContainer');
       kamContainer.innerHTML = '';
 
-      // Add ALL KAMs
       kamArray.forEach(kam => {
         const closedPct = (kam.closed / kam.total * 100) || 0;
         const prospectingPct = (kam.prospecting / kam.total * 100) || 0;
@@ -979,26 +897,23 @@
         kamContainer.appendChild(row);
       });
 
-      // If no KAMs found
-      if (kamArray.length === 0) {
-        kamContainer.innerHTML = '<div class="text-center" style="padding: 15px; color: #6B7A8D;">No KAM data available</div>';
-      }
-
-      // Calculate stages by aging
-      const stagesByAging = {
-        '0-30': {
+      // ===========================================
+      // STAGES BY AGING - NEW HORIZONTAL STACKED BAR CHART
+      // ===========================================
+      const agingStages = {
+        '0-30 days': {
           prospecting: filteredData.filter(row => row.stage?.toLowerCase().includes('prospecting') && row.aging > 0 && row.aging <= 30).length,
           demo: filteredData.filter(row => row.stage?.toLowerCase().includes('demo') && row.aging > 0 && row.aging <= 30).length,
           proposal: filteredData.filter(row => row.stage?.toLowerCase().includes('proposal') && row.aging > 0 && row.aging <= 30).length,
           negotiation: filteredData.filter(row => row.stage?.toLowerCase().includes('negotiation') && row.aging > 0 && row.aging <= 30).length
         },
-        '31-60': {
+        '31-60 days': {
           prospecting: filteredData.filter(row => row.stage?.toLowerCase().includes('prospecting') && row.aging > 30 && row.aging <= 60).length,
           demo: filteredData.filter(row => row.stage?.toLowerCase().includes('demo') && row.aging > 30 && row.aging <= 60).length,
           proposal: filteredData.filter(row => row.stage?.toLowerCase().includes('proposal') && row.aging > 30 && row.aging <= 60).length,
           negotiation: filteredData.filter(row => row.stage?.toLowerCase().includes('negotiation') && row.aging > 30 && row.aging <= 60).length
         },
-        '60+': {
+        '60+ days': {
           prospecting: filteredData.filter(row => row.stage?.toLowerCase().includes('prospecting') && row.aging > 60).length,
           demo: filteredData.filter(row => row.stage?.toLowerCase().includes('demo') && row.aging > 60).length,
           proposal: filteredData.filter(row => row.stage?.toLowerCase().includes('proposal') && row.aging > 60).length,
@@ -1007,28 +922,23 @@
       };
 
       // Update charts
-      updateCharts(prospecting, demo, proposal, negotiation, aging0to30, aging31to60, aging60plus, stagesByAging);
+      updateCharts(prospecting, demo, proposal, negotiation, aging0to30, aging31to60, aging60plus, agingStages);
       
-      // Update table
       updateTable();
-      
       document.getElementById('recordCount').innerText = total + ' records';
     }
 
-    function updateCharts(prospecting, demo, proposal, negotiation, aging0to30, aging31to60, aging60plus, stagesByAging) {
+    function updateCharts(prospecting, demo, proposal, negotiation, aging0to30, aging31to60, aging60plus, agingStages) {
       // Chart 1: Deals by Stage
-      const stageLabels = ['Prospecting', 'Demo', 'Proposal', 'Negotiation'];
-      const stageData = [prospecting, demo, proposal, negotiation];
-
       if (charts.dealsChart) charts.dealsChart.destroy();
       
       const ctx1 = document.getElementById('dealsByStageChart').getContext('2d');
       charts.dealsChart = new Chart(ctx1, {
         type: 'bar',
         data: {
-          labels: stageLabels,
+          labels: ['Prospecting', 'Demo', 'Proposal', 'Negotiation'],
           datasets: [{
-            data: stageData,
+            data: [prospecting, demo, proposal, negotiation],
             backgroundColor: ['#A05AFF', '#4BCBEB', '#FE9496', '#1BCFB4'],
             borderRadius: 6
           }]
@@ -1036,9 +946,9 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          layout: { padding: { top: 15 } },
           plugins: { 
             legend: { display: false },
+            tooltip: { backgroundColor: '#2D3A45' },
             datalabels: {
               color: '#2D3A45',
               font: { weight: 'bold', size: 10 },
@@ -1048,12 +958,8 @@
             }
           },
           scales: {
-            y: { 
-              beginAtZero: true,
-              ticks: { stepSize: 1, color: '#2D3A45', font: { size: 9 } },
-              grid: { color: '#E9EDF2' }
-            },
-            x: { ticks: { color: '#2D3A45', font: { size: 9 } }, grid: { display: false } }
+            y: { beginAtZero: true, ticks: { stepSize: 1, color: '#2D3A45' } },
+            x: { ticks: { color: '#2D3A45' } }
           }
         }
       });
@@ -1079,21 +985,19 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: { 
-            legend: { position: 'bottom', labels: { color: '#2D3A45', font: { size: 9 } } },
+            legend: { position: 'bottom', labels: { color: '#2D3A45' } },
+            tooltip: { backgroundColor: '#2D3A45' },
             datalabels: {
               display: agingTotal > 0,
               color: 'white',
               font: { weight: 'bold', size: 9 },
-              formatter: (value) => {
-                const percentage = agingTotal > 0 ? ((value / agingTotal) * 100).toFixed(1) : 0;
-                return percentage + '%';
-              }
+              formatter: (value) => ((value / agingTotal) * 100).toFixed(1) + '%'
             }
           }
         }
       });
 
-      // Chart 3: Stages by Aging
+      // Chart 3: Stages by Aging - NEW HORIZONTAL STACKED BAR
       if (charts.stagesByAgingChart) charts.stagesByAgingChart.destroy();
       
       const ctx3 = document.getElementById('stagesByAgingChart').getContext('2d');
@@ -1104,28 +1008,28 @@
           datasets: [
             {
               label: 'Prospecting',
-              data: [stagesByAging['0-30'].prospecting, stagesByAging['31-60'].prospecting, stagesByAging['60+'].prospecting],
+              data: [agingStages['0-30 days'].prospecting, agingStages['31-60 days'].prospecting, agingStages['60+ days'].prospecting],
               backgroundColor: '#A05AFF',
               stack: 'Stack 0',
               borderRadius: 4
             },
             {
               label: 'Demo',
-              data: [stagesByAging['0-30'].demo, stagesByAging['31-60'].demo, stagesByAging['60+'].demo],
+              data: [agingStages['0-30 days'].demo, agingStages['31-60 days'].demo, agingStages['60+ days'].demo],
               backgroundColor: '#4BCBEB',
               stack: 'Stack 0',
               borderRadius: 4
             },
             {
               label: 'Proposal',
-              data: [stagesByAging['0-30'].proposal, stagesByAging['31-60'].proposal, stagesByAging['60+'].proposal],
+              data: [agingStages['0-30 days'].proposal, agingStages['31-60 days'].proposal, agingStages['60+ days'].proposal],
               backgroundColor: '#FE9496',
               stack: 'Stack 0',
               borderRadius: 4
             },
             {
               label: 'Negotiation',
-              data: [stagesByAging['0-30'].negotiation, stagesByAging['31-60'].negotiation, stagesByAging['60+'].negotiation],
+              data: [agingStages['0-30 days'].negotiation, agingStages['31-60 days'].negotiation, agingStages['60+ days'].negotiation],
               backgroundColor: '#1BCFB4',
               stack: 'Stack 0',
               borderRadius: 4
@@ -1133,19 +1037,42 @@
           ]
         },
         options: {
+          indexAxis: 'y', // This makes it HORIZONTAL
           responsive: true,
           maintainAspectRatio: false,
           plugins: { 
-            legend: { position: 'bottom', labels: { color: '#2D3A45', font: { size: 8 } } },
-            datalabels: { display: false }
+            legend: { 
+              position: 'bottom',
+              labels: { color: '#2D3A45', font: { size: 9 } }
+            },
+            tooltip: {
+              backgroundColor: '#2D3A45',
+              callbacks: {
+                label: (context) => {
+                  const label = context.dataset.label || '';
+                  const value = context.raw;
+                  return `${label}: ${value} leads`;
+                }
+              }
+            },
+            datalabels: {
+              color: 'white',
+              font: { weight: 'bold', size: 9 },
+              formatter: (value) => value > 0 ? value : '',
+              align: 'center',
+              anchor: 'center'
+            }
           },
           scales: {
-            y: { 
+            x: { 
               beginAtZero: true,
-              ticks: { stepSize: 1, color: '#2D3A45', font: { size: 8 } },
+              ticks: { stepSize: 1, color: '#2D3A45' },
               grid: { color: '#E9EDF2' }
             },
-            x: { ticks: { color: '#2D3A45', font: { size: 8 } }, grid: { display: false } }
+            y: { 
+              ticks: { color: '#2D3A45' }, 
+              grid: { display: false } 
+            }
           }
         }
       });
@@ -1198,7 +1125,6 @@
         if (priority && row.priority !== priority) match = false;
         if (stage && row.stage !== stage) match = false;
         
-        // Date filter
         if (startDate && row.date) {
           const rowDate = new Date(row.date);
           const start = new Date(startDate);
@@ -1230,10 +1156,7 @@
       updateDashboard();
     });
 
-    // Initialize
-    window.onload = function() {
-      loadData();
-    };
+    window.onload = loadData;
   </script>
 </body>
 </html>

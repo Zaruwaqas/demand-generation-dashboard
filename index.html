@@ -423,8 +423,8 @@
           <div style="color: #6B7A8D; font-size: 0.8rem;">Total Leads</div>
         </div>
         <div style="text-align: right;">
-          <div class="kpi-value" style="font-size: 1.5rem;" id="prospectingHeader">0</div>
-          <div style="color: #6B7A8D; font-size: 0.8rem;">Prospecting</div>
+          <div class="kpi-value" style="font-size: 1.5rem;" id="closedLeadsHeader">0</div>
+          <div style="color: #6B7A8D; font-size: 0.8rem;">Closed Deals</div>
         </div>
       </div>
     </div>
@@ -484,24 +484,14 @@
         <div class="kpi-trend trend-down" id="prospectingTrend">▼ 0% vs last month</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-value" id="kpiConversion">0%</div>
-        <div class="kpi-label">Demo/Proposal/Negotiation</div>
-        <div class="kpi-trend trend-up" id="conversionTrend">▲ 0% vs last month</div>
-        <div style="font-size: 0.7rem; color: #6B7A8D; margin-top: 5px;">of prospecting leads</div>
+        <div class="kpi-value" id="kpiClosed">0</div>
+        <div class="kpi-label">Closed Deals</div>
+        <div class="kpi-trend trend-up" id="closedTrend">▲ 0% vs last month</div>
       </div>
       <div class="kpi-card">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-          <span style="color: #4BCBEB;">Demo</span>
-          <span style="font-weight: 600;" id="demoPercent">0%</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-          <span style="color: #FE9496;">Proposal</span>
-          <span style="font-weight: 600;" id="proposalPercent">0%</span>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span style="color: #1BCFB4;">Negotiation</span>
-          <span style="font-weight: 600;" id="negotiationPercent">0%</span>
-        </div>
+        <div class="kpi-value" id="kpiConversion">0%</div>
+        <div class="kpi-label">Conversion Rate</div>
+        <div class="kpi-trend trend-up" id="conversionTrend">▲ 0% vs last month</div>
       </div>
     </div>
 
@@ -520,9 +510,9 @@
         </div>
       </div>
       <div class="chart-card">
-        <div class="chart-title">📊 Stages by Aging</div>
+        <div class="chart-title">👥 KAM Performance</div>
         <div class="chart-container">
-          <canvas id="stagesByAgingChart"></canvas>
+          <canvas id="kamPerformanceChart"></canvas>
         </div>
       </div>
     </div>
@@ -755,21 +745,20 @@
       const demo = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('demo')).length;
       const proposal = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('proposal')).length;
       const negotiation = filteredData.filter(row => row.stage && row.stage.toLowerCase().includes('negotiation')).length;
+      const closed = filteredData.filter(row => row.stage && (row.stage.toLowerCase().includes('closed won') || row.stage.toLowerCase().includes('closed'))).length;
       
       const advanced = demo + proposal + negotiation;
-      const conversionRate = prospecting > 0 ? (advanced / prospecting * 100).toFixed(1) : 0;
+      const conversionRate = total > 0 ? (closed / total * 100).toFixed(1) : 0;
 
       // Update header KPIs
       document.getElementById('totalLeadsHeader').innerText = total;
-      document.getElementById('prospectingHeader').innerText = prospecting;
+      document.getElementById('closedLeadsHeader').innerText = closed;
 
       // Update KPI cards
       document.getElementById('kpiTotal').innerText = total;
       document.getElementById('kpiProspecting').innerText = prospecting;
+      document.getElementById('kpiClosed').innerText = closed;
       document.getElementById('kpiConversion').innerText = conversionRate + '%';
-      document.getElementById('demoPercent').innerText = prospecting > 0 ? ((demo / prospecting) * 100).toFixed(1) + '%' : '0%';
-      document.getElementById('proposalPercent').innerText = prospecting > 0 ? ((proposal / prospecting) * 100).toFixed(1) + '%' : '0%';
-      document.getElementById('negotiationPercent').innerText = prospecting > 0 ? ((negotiation / prospecting) * 100).toFixed(1) + '%' : '0%';
 
       // Update aging stats
       const aging0to30 = filteredData.filter(row => row.aging > 0 && row.aging <= 30).length;
@@ -833,6 +822,23 @@
 
       console.log('Source percentages calculated');
 
+      // Calculate KAM performance data
+      const kamPerformance = {};
+      filteredData.forEach(row => {
+        if (row.kam && row.kam.trim() !== '') {
+          if (!kamPerformance[row.kam]) {
+            kamPerformance[row.kam] = { total: 0, closed: 0, prospecting: 0 };
+          }
+          kamPerformance[row.kam].total++;
+          
+          if (row.stage && row.stage.toLowerCase().includes('closed')) {
+            kamPerformance[row.kam].closed++;
+          } else if (row.stage && row.stage.toLowerCase().includes('prospecting')) {
+            kamPerformance[row.kam].prospecting++;
+          }
+        }
+      });
+
       // Calculate stages by aging
       const stagesByAging = {
         '0-30': {
@@ -856,7 +862,7 @@
       };
 
       // Update charts
-      updateCharts(prospecting, demo, proposal, negotiation, aging0to30, aging31to60, aging60plus, stagesByAging);
+      updateCharts(prospecting, demo, proposal, negotiation, aging0to30, aging31to60, aging60plus, stagesByAging, kamPerformance);
       
       // Update table
       updateTable();
@@ -864,7 +870,7 @@
       document.getElementById('recordCount').innerText = total + ' records';
     }
 
-    function updateCharts(prospecting, demo, proposal, negotiation, aging0to30, aging31to60, aging60plus, stagesByAging) {
+    function updateCharts(prospecting, demo, proposal, negotiation, aging0to30, aging31to60, aging60plus, stagesByAging, kamPerformance) {
       // Chart 1: Deals by Stage
       const stageLabels = ['Prospecting', 'Demo', 'Proposal', 'Negotiation'];
       const stageData = [prospecting, demo, proposal, negotiation];
@@ -942,40 +948,38 @@
         }
       });
 
-      // Chart 3: Stages by Aging (Stacked Bar)
-      if (charts.stagesByAgingChart) charts.stagesByAgingChart.destroy();
+      // Chart 3: KAM Performance (Stacked Bar)
+      if (charts.kamPerformanceChart) charts.kamPerformanceChart.destroy();
       
-      const ctx3 = document.getElementById('stagesByAgingChart').getContext('2d');
-      charts.stagesByAgingChart = new Chart(ctx3, {
+      const kamNames = Object.keys(kamPerformance);
+      const closedData = kamNames.map(kam => kamPerformance[kam].closed);
+      const prospectingData = kamNames.map(kam => kamPerformance[kam].prospecting);
+      const otherData = kamNames.map(kam => kamPerformance[kam].total - (kamPerformance[kam].closed + kamPerformance[kam].prospecting));
+      
+      const ctx3 = document.getElementById('kamPerformanceChart').getContext('2d');
+      charts.kamPerformanceChart = new Chart(ctx3, {
         type: 'bar',
         data: {
-          labels: ['0-30 days', '31-60 days', '60+ days'],
+          labels: kamNames,
           datasets: [
             {
+              label: 'Closed',
+              data: closedData,
+              backgroundColor: '#1BCFB4',
+              stack: 'Stack 0',
+              borderRadius: 4
+            },
+            {
               label: 'Prospecting',
-              data: [stagesByAging['0-30'].prospecting, stagesByAging['31-60'].prospecting, stagesByAging['60+'].prospecting],
+              data: prospectingData,
               backgroundColor: '#A05AFF',
               stack: 'Stack 0',
               borderRadius: 4
             },
             {
-              label: 'Demo',
-              data: [stagesByAging['0-30'].demo, stagesByAging['31-60'].demo, stagesByAging['60+'].demo],
-              backgroundColor: '#4BCBEB',
-              stack: 'Stack 0',
-              borderRadius: 4
-            },
-            {
-              label: 'Proposal',
-              data: [stagesByAging['0-30'].proposal, stagesByAging['31-60'].proposal, stagesByAging['60+'].proposal],
+              label: 'Other Stages',
+              data: otherData,
               backgroundColor: '#FE9496',
-              stack: 'Stack 0',
-              borderRadius: 4
-            },
-            {
-              label: 'Negotiation',
-              data: [stagesByAging['0-30'].negotiation, stagesByAging['31-60'].negotiation, stagesByAging['60+'].negotiation],
-              backgroundColor: '#1BCFB4',
               stack: 'Stack 0',
               borderRadius: 4
             }
@@ -985,8 +989,15 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: { 
-            legend: { position: 'bottom', labels: { color: '#2D3A45' } },
-            datalabels: { display: false }
+            legend: { 
+              position: 'bottom',
+              labels: { color: '#2D3A45' }
+            },
+            datalabels: {
+              color: 'white',
+              font: { weight: 'bold', size: 10 },
+              formatter: (value) => value > 0 ? value : ''
+            }
           },
           scales: {
             y: { 
@@ -994,7 +1005,14 @@
               ticks: { stepSize: 1, color: '#2D3A45' },
               grid: { color: '#E9EDF2' }
             },
-            x: { ticks: { color: '#2D3A45' }, grid: { display: false } }
+            x: { 
+              ticks: { 
+                color: '#2D3A45',
+                maxRotation: 45,
+                minRotation: 45
+              }, 
+              grid: { display: false } 
+            }
           }
         }
       });
